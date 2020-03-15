@@ -1,11 +1,19 @@
 import React from 'react';
 
-// import { Container } from './styles';
+import { Container, Content, Banner } from './styles';
+import HomeScrumBoard from './assets/homeScrumBoard.png';
 
 export default function HomePage() {
-  return (
-    <>
-      <h2>Content to Home page</h2>
-    </>
+  return (    
+    <Container>
+      <Content> Eita </Content>   
+
+      <Banner>
+        <Banner.image src={HomeScrumBoard} alt="teste" />
+      </Banner>
+      
+      
+    </Container>
+    
   );
 }

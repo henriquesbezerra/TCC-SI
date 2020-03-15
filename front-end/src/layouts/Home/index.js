@@ -1,12 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-// import { Container } from './styles';
+import { Container, Aside, Content, Header, Main, Footer, MenuButton } from './styles';
 
 export default function Home(props) {
+  const [statusSidebar, toggleSidebar] = useState(false);
   return (
-    <div>
-        <h1>Home Page</h1>
-        {props.children}
-    </div>
+    <Container  >
+        <Aside sidebar={statusSidebar}>
+          <MenuButton 
+            className={statusSidebar? '' : 'on'}
+            onClick={()=>toggleSidebar(!statusSidebar)} >
+            <MenuButton.bar />
+            <MenuButton.bar />
+            <MenuButton.bar />
+          </MenuButton>
+        </Aside>
+        <Content>
+          <Header> Eita</Header>
+          <Main>
+            {props.children}           
+          </Main>
+          <Footer>Footer</Footer>          
+        </Content>                
+    </Container>
   );
 }
