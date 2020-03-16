@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-
-import { Container, Aside, Content, Header, Main, Footer, MenuButton } from './styles';
+import {Link} from 'react-router-dom';
+import { Container, Aside, Content, Header, Main, MenuButton, Nav } from './styles';
 
 export default function Home(props) {
-  const [statusSidebar, toggleSidebar] = useState(false);
+  const [statusSidebar, toggleSidebar] = useState(true);
   return (
     <Container  >
         <Aside sidebar={statusSidebar}>
@@ -16,11 +16,15 @@ export default function Home(props) {
           </MenuButton>
         </Aside>
         <Content>
-          <Header> Eita</Header>
+          <Header>
+            <Nav>
+              <Link to="/">Home</Link>
+              <Link to="/login">Login</Link>                          
+            </Nav>
+          </Header>
           <Main>
             {props.children}           
           </Main>
-          <Footer>Footer</Footer>          
         </Content>                
     </Container>
   );

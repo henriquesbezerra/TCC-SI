@@ -1,5 +1,5 @@
 import HomePage from '../modules/HomePage';
-import Login from '../modules/Login';
+import Login from '../modules/HomePage/pages/Login';
 
 export default [
     {
@@ -14,7 +14,7 @@ export default [
         path: '/login',
         active: true,
         type: 'public',
-        layout: 'login',
+        layout: 'home',
         component: Login
     }
 ]

@@ -34,10 +34,29 @@ export const Content = styled.div`
 
 export const Header = styled.header`    
     min-height: 60px;
-    border: 1px solid blue;
     position: absolute;
     top: 0;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 100px 0px 20px;
+    box-sizing: border-box;
+`;
+
+export const Nav = styled.nav`
+    & a {
+        color: #fff;
+        font-size: 1.4rem;
+        font-weight: 600;
+        text-decoration: none;
+        margin: 0 10px;
+        opacity: 0.7;
+    }
+    & a:hover{
+        color: #fff;        
+        opacity: 1;
+    }
 `;
 
 export const Main = styled.main`      
