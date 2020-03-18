@@ -52,6 +52,10 @@ export const Main = styled.main`
     margin: -60px 0px;    
 `;
 
+Main.content = styled.div`
+    padding: 80px 40px;
+`;
+
 export const Footer = styled.footer`        
     min-height: 60px;  
     position: absolute;

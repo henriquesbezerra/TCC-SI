@@ -1,6 +1,7 @@
 import {createGlobalStyle} from 'styled-components';
 
 import { fonts } from './fonts';
+import { typography } from './typography';
 
 export const backgroundGradient = `
     background: rgb(4,23,55);
@@ -43,9 +44,7 @@ export const highlightGradient_hover = `
 `;
 
 export default createGlobalStyle`
-    
-    ${fonts}
-
+        
     * {
         margin: 0;
         padding: 0;
@@ -67,5 +66,8 @@ export default createGlobalStyle`
     ul{
         list-style: none;
     }
+
+    ${fonts}
+    ${typography}
 
 `;

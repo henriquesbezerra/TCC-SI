@@ -22,7 +22,7 @@ const PrivateRoute = ({component: Component, layout, ...rest}) =>(
     <Route 
         {...rest} 
         render={(props)=> isAuthenticated() ? (
-                <LayoutController name={layout || 'none'}>                    
+                <LayoutController name={layout || 'none'} currentLocation={props.location}>                    
                     <Component {...props}/>
                 </LayoutController>
             ): (

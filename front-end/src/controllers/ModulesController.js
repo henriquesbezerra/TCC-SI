@@ -9,7 +9,7 @@ export default [
         path: '/',
         active: true,
         exact: true,
-        type: 'public',
+        type: isAuthenticated() ? 'private' :'public',
         layout: isAuthenticated() ? 'panel' : 'home',
         component: isAuthenticated() ? Dashboard : HomePage
     },

@@ -1,25 +1,22 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 
 import { DrawerMenu } from '../../components/DrawerMenu';
 
-import { Container, Aside, Content, Header, Main, Nav } from '../CommonStyles';
+import { Container, Aside, Content, Main } from '../CommonStyles';
 
-export default function Panel(props) {
+import { menuOptions } from './menuOptions';
+
+export default function Panel(props) {  
   return (
     <Container>
         <Aside>
-          <DrawerMenu />
+          <DrawerMenu menuOptions={menuOptions} currentLocation={props.currentLocation}/>
         </Aside>
-        <Content>
-          <Header>
-            <Nav>
-              <Link to="/">Home</Link>
-              <Link to="/login">Login</Link>                          
-            </Nav>
-          </Header>
+        <Content>          
           <Main>
-            {props.children}           
+            <Main.content>              
+              {props.children}           
+            </Main.content>
           </Main>
         </Content>                
     </Container>

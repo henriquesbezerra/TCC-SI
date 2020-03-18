@@ -8,9 +8,9 @@ import {
 
 export const Aside = styled.aside`
     grid-area: aside;
-    width: ${props => props.sidebar ? '60px': '200px'};
+    width: ${props => props.sidebar ? '60px': '250px'};
     transition: all cubic-bezier(1, 0.08, 0.2, 0.51) 0.5s;    
-    padding: 20px 5px;
+    padding: 65px  0;
     position: relative;
     background: #fff;
     height: 100%;
@@ -82,5 +82,11 @@ MenuButton.bar = styled.span`
         animation-fill-mode: forwards
     }
    
+`;
+
+
+export const MenuOptions = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 
