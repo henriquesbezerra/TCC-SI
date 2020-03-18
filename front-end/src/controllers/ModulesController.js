@@ -1,3 +1,6 @@
+import { isAuthenticated } from './AuthController';
+
+import Dashboard from '../modules/Dashboard';
 import HomePage from '../modules/HomePage';
 import Login from '../modules/HomePage/pages/Login';
 
@@ -7,8 +10,8 @@ export default [
         active: true,
         exact: true,
         type: 'public',
-        layout: 'home',
-        component: HomePage
+        layout: isAuthenticated() ? 'panel' : 'home',
+        component: isAuthenticated() ? Dashboard : HomePage
     },
     {
         path: '/login',

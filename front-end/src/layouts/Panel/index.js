@@ -5,9 +5,9 @@ import { DrawerMenu } from '../../components/DrawerMenu';
 
 import { Container, Aside, Content, Header, Main, Nav } from '../CommonStyles';
 
-export default function Home(props) {  
+export default function Panel(props) {
   return (
-    <Container  >
+    <Container>
         <Aside>
           <DrawerMenu />
         </Aside>

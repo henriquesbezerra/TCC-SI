@@ -1,27 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { isAuthenticated } from '../../../controllers/AuthController';
 import { useFetch } from '../../../hooks/useFetch';
+
+import { Redirect } from 'react-router-dom';
 
 import { Container, Content, Banner, FormLogin } from '../styles';
 import AppLogo from '../../../components/AppLogo';
 
 
-export default function Login() {
+export default function Login({history}) {
   const { post } = useFetch();
-  const [username, setUsername] = useState('henrique@mail.com');
+  const [email, setEmail] = useState('henrique@mail.com');
   const [password, setPassword] = useState('password');  
+  const [isLogged, setLogged] = useState(false);
 
-  const handleLogin = async () => {
-    if(username !== '' && password !== ''){
-      const status = await post('/login',{
-        "email": "henrique@mail.com",
-        "password": "password"
-      });
-      console.log('status: ', status);
+  
+  const handleLogin = async() => {
+    if(email !== '' && password !== ''){
+      const result = await post('/login',{email, password});
+      console.log('result: ', result);
+      localStorage.setItem('access_token',result.token);      
+      window.location.reload();
     }
   }
 
-  return (    
+  useEffect(()=>{
+    if(isAuthenticated()){
+      setLogged(true);
+    }
+  },[])
+
+  return isLogged ? (<Redirect to="/" />) : (    
     <Container>
       <Content>         
         
@@ -57,8 +67,8 @@ export default function Login() {
               <FormLogin.input 
                 type="email" 
                 name="email" 
-                value={username} 
-                onChange={(e)=>setUsername(e.currentTarget.value)} 
+                value={email} 
+                onChange={(e)=>setEmail(e.currentTarget.value)} 
                 placeholder="Digite seu email" />
             </FormLogin.label>
 

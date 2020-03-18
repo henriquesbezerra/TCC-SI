@@ -16,6 +16,8 @@ class AuthController {
     async login({ request, auth }){
         const { email, password } = request.all();
         
+        console.log(email, password)
+
         const access_token = await auth.attempt(email, password);
         
         return access_token;

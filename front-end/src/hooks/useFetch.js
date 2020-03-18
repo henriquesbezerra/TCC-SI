@@ -1,24 +1,19 @@
-export const useFetch = () =>{
-    
-    // const myHeaders = new Headers({
-    //     "Content-Type": "application/json"
-    // });
-    
-    const myHost = 'http://127.0.0.1:3333';
+import axios from 'axios';
 
+const API = axios.create({
+    baseURL: process.env.REACT_APP_API_URL
+});
+
+export const useFetch = () =>{
+   
     const post = async (path, data) => {
         try {
-            const result = await fetch(
-                myHost+path,
-                {
-                    method: 'POST',            
-                    body: data
-                });
-            if(result){
-                return result;
-            }
+            const response = await API.post(path, data);           
+            if(response){
+                return response.data;
+            }            
         } catch (e) {
-            console.log('Error to POST DATA to: ' + path, e);
+            console.log('Erro to POST data to ' + path, e);
         }
         return null;       
     }
