@@ -3,6 +3,7 @@ import { isAuthenticated } from './AuthController';
 import Dashboard from '../modules/Dashboard';
 import HomePage from '../modules/HomePage';
 import Login from '../modules/HomePage/pages/Login';
+import Projects from '../modules/Projects';
 
 export default [
     {
@@ -19,5 +20,13 @@ export default [
         type: 'public',
         layout: 'home',
         component: Login
+    },
+    {
+        path: '/projetos',
+        active: true,
+        type: 'private',
+        layout: 'panel',
+        component: Projects
     }
+
 ]

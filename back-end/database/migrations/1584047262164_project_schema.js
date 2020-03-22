@@ -9,6 +9,7 @@ class ProjectSchema extends Schema {
       table.increments()
       table.string('titulo', 150).notNullable()
       table.string('cliente', 150).nullable()
+      table.string('descricao').nullable()
       table.date('data_inicio').nullable()
       table.date('data_termino').nullable()      
       table.timestamps()
