@@ -9,7 +9,7 @@ export default function Home(props) {
   return (
     <Container  >
         <Aside>
-          <DrawerMenu />
+          <DrawerMenu menuOptions={[]} />
         </Aside>
         <Content>
           <Header>

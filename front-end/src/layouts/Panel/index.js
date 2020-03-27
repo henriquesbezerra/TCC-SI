@@ -7,6 +7,7 @@ import { Container, Aside, Content, Main } from '../CommonStyles';
 import { menuOptions } from './menuOptions';
 
 export default function Panel(props) {  
+  
   return (
     <Container>
         <Aside>
