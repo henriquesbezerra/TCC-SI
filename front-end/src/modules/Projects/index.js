@@ -6,6 +6,7 @@ import ProjectCard from '../../components/ProjectCard';
 import {formatDate} from '../../components/HelperFunctions';
 
 import {useFetch} from '../../hooks/useFetch';
+import { Link } from 'react-router-dom';
 
 export default function Projects() {
     const { get } = useFetch();
@@ -14,7 +15,6 @@ export default function Projects() {
     const loadProjects = async () =>{
         let response = await get('/project');
         if(response){
-            console.log('projetos::',response);
             setProjects(response);
         }
     }
@@ -23,9 +23,11 @@ export default function Projects() {
     },[]);
 
     return (
-        <div>
-            
-            <h1>Projetos</h1>
+        <div>            
+            <div>
+                <h1>Projetos</h1>
+                <Link to="/projetos/novo">Novo projeto</Link>
+            </div>
             <ContainerCards>
                 {projects.map(item =>(<ProjectCard 
                     key={item?.id}

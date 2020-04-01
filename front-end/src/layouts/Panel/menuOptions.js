@@ -8,6 +8,7 @@ export const menuOptions = [
         icon: <GoGraph />
     },
     {
+        isParent: true,
         path: '/projetos',
         label: 'Projetos',
         icon: <GoProject />

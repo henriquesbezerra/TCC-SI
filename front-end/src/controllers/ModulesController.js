@@ -4,6 +4,7 @@ import Dashboard from '../modules/Dashboard';
 import HomePage from '../modules/HomePage';
 import Login from '../modules/HomePage/pages/Login';
 import Projects from '../modules/Projects';
+import AddProject from '../modules/Projects/Pages/AddProject';
 
 export default [
     {
@@ -24,9 +25,17 @@ export default [
     {
         path: '/projetos',
         active: true,
+        exact: true,
         type: 'private',
         layout: 'panel',
         component: Projects
+    },    
+    {        
+        path: '/projetos/novo',        
+        active: true,
+        type: 'private',
+        layout: 'panel',
+        component: AddProject
     }
 
 ]

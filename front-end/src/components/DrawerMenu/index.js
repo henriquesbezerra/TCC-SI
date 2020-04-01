@@ -5,6 +5,15 @@ import Link from './Link';
 
 export function DrawerMenu(props) {
   const [statusSidebar, toggleSidebar] = useState(true);  
+  
+  const checkCurrent =(option)=>{      
+    if(option?.isParent){
+      if(props.currentLocation.pathname.indexOf(option.path) > -1){
+        return 1;
+      }
+    }
+    return option.path === props.currentLocation.pathname ? 1 : 0    
+  }
   return (    
     <Aside sidebar={statusSidebar}>
       <MenuButton 
@@ -19,7 +28,7 @@ export function DrawerMenu(props) {
           props.menuOptions.map((option,index) =>(
             <Link 
               sidebar={statusSidebar ? 1 : 0}
-              current={option.path === props.currentLocation.pathname ? 1 : 0}              
+              current={checkCurrent(option)}              
               key={`meuOption${index}`} to={option.path} >
               <div>{option.label}</div>
               <div>{option.icon}</div>
