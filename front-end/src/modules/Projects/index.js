@@ -20,6 +20,7 @@ export default function Projects() {
     }
     useEffect(()=>{
         loadProjects();
+        // eslint-disable-next-line 
     },[]);
 
     return (
