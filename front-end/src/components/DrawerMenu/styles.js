@@ -8,7 +8,7 @@ import {
 
 export const Aside = styled.aside`
     grid-area: aside;
-    width: ${props => props.sidebar ? '60px': '250px'};
+    width: ${props => props.sidebar ? '250px': '60px'};
     transition: all cubic-bezier(1, 0.08, 0.2, 0.51) 0.5s;    
     padding: 65px  0;
     position: relative;

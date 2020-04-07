@@ -10,9 +10,42 @@ const API = axios.create({
 console.log('aaccess_token',ACCESS_TOKEN);
 
 export const useFetch = () =>{
+
     const post = async (path, data) => {
         try {
             const response = await API.post(path, data);           
+            if(response){
+                return response.data;
+            }            
+        } catch (e) {
+            console.log('Erro to POST data to ' + path, e);
+        }
+        return null;       
+    }
+
+    const authPost = async (path, data) => {
+        try {
+            const response = await API.post(path, data, {
+                headers:{
+                    authorization: `Bearer ${ACCESS_TOKEN}`
+                }
+            });           
+            if(response){
+                return response.data;
+            }            
+        } catch (e) {
+            console.log('Erro to POST data to ' + path, e);
+        }
+        return null;       
+    }
+
+    const authPut = async (path, data) => {
+        try {
+            const response = await API.post(path, data, {
+                headers:{
+                    authorization: `Bearer ${ACCESS_TOKEN}`
+                }
+            });           
             if(response){
                 return response.data;
             }            
@@ -40,6 +73,8 @@ export const useFetch = () =>{
 
     return {
         post,
+        authPost,
+        authPut,
         get
     }
 }

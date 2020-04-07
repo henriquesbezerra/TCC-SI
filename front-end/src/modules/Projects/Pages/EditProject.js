@@ -9,11 +9,13 @@ import { Form } from '../../../components/Form/styles';
 
 import { MdKeyboardBackspace } from 'react-icons/md';
 
-export default function AddProject(props) {
+export default function EditProject(props) {
   
-  const { history } = props;
+  const { history, match } = props;
 
-  const { authPost } = useFetch();
+  console.log(props);
+
+  const { authPut } = useFetch();
 
   const [titulo, setTitulo] = useState('');
   const [cliente, setCliente] = useState('');
@@ -23,7 +25,7 @@ export default function AddProject(props) {
   const handleSave = async(e) => {
     e.preventDefault();
     try {      
-      const result = await authPost('/project', {titulo, cliente, descricao, users});
+      const result = await authPut(`/project/${match.params.id}`, {titulo, cliente, descricao, users});
       console.log('result: ', result);  
       history.replace({pathname: '/projetos'})
     } catch (error) {

@@ -27,7 +27,7 @@ export default function Projects() {
         <div>            
             <div>
                 <h1>Projetos</h1>
-                <Link to="/projetos/novo">Novo projeto</Link>
+                <Link  to="/projetos/novo">Novo projeto</Link>
             </div>
             <ContainerCards>
                 {projects.map(item =>(<ProjectCard 
