@@ -5,7 +5,7 @@ import HomePage from '../modules/HomePage';
 import Login from '../modules/HomePage/pages/Login';
 import Projects from '../modules/Projects';
 import AddProject from '../modules/Projects/Pages/AddProject';
-import EditProject from '../modules/Projects/Pages/EditProject';
+import ViewProject from '../modules/Projects/Pages/ViewProject';
 
 export default [
     {
@@ -43,7 +43,7 @@ export default [
         active: true,                
         type: 'private',
         layout: 'panel',
-        component: EditProject
+        component: ViewProject
     }
 
 ]

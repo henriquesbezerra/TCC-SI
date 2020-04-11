@@ -4,14 +4,10 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const Project = use("App/Models/Project");
+const Backlog = use('App/Models/Backlog')
 
-
-/**
- * Resourceful controller for interacting with projects
- */
-class ProjectController {
-  /**
+class BacklogController {
+    /**
    * Show a list of all projects.
    * GET projects
    *
@@ -21,12 +17,11 @@ class ProjectController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    const projects = await Project.query()
-      .with('users')
-      .with('backlogs')
-      .with('backlogs.tasks')
-      .with('boardColumns').fetch();
-    return projects;
+    // const projects = await Project.query()
+    //   .with('users')
+    //   .with('backlogs')
+    //   .with('boardColumns').fetch();
+    // return projects;
   }
 
   /**
@@ -38,20 +33,11 @@ class ProjectController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const { users, ...data} = request.all();
+    const { ...data} = request.all();
     
-    const project = await Project.create(data);
-
-    await project.backlogs().create({type: 1});
-    await project.load('backlogs');
-    await project.load('boardColumns');
-
-    if(users && users.length > 0){
-      await project.users().attach(users);
-      await project.load('users');
-    }
+    const backlog = await Backlog.create(data);
     
-    return project;
+    return backlog;
   }
 
   /**
@@ -66,8 +52,7 @@ class ProjectController {
   async show ({ params, request, response, view }) {
     const project = await Project.query('id',params.id)
       .with('users')
-      .with('backlogs')  
-      .with('backlogs.tasks')    
+      .with('backlogs')      
       .with('boardColumns').first();  
       
     return project;
@@ -111,4 +96,4 @@ class ProjectController {
   }
 }
 
-module.exports = ProjectController
+module.exports = BacklogController

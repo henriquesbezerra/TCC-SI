@@ -12,7 +12,7 @@ import AppLogo from '../../../components/AppLogo';
 export default function Login({history}) {
   const { post } = useFetch();
   const [email, setEmail] = useState('henrique@mail.com');
-  const [password, setPassword] = useState('password');  
+  const [password, setPassword] = useState('12345');  
   const [isLogged, setLogged] = useState(false);
 
   

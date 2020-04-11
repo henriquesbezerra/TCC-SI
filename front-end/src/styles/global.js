@@ -1,4 +1,4 @@
-import {createGlobalStyle} from 'styled-components';
+import styled, {createGlobalStyle} from 'styled-components';
 
 import { fonts } from './fonts';
 import { typography } from './typography';
@@ -69,5 +69,34 @@ export default createGlobalStyle`
 
     ${fonts}
     ${typography}
+
+
+    .circleButton{
+        display: flex;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        background-color: #FFF;
+        padding: 5px;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0px 1px 3px #00000073;
+    }
+
+    .df{
+        display: flex;
+    }
+
+    .fdc{
+        flex-direction:column;
+    }
+
+    .fdr{
+        flex-direction: row;
+    }
+
+    .alic{
+        align-items:center;
+    }
 
 `;

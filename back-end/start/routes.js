@@ -24,6 +24,19 @@ Route.post('/login', "AuthController.login");
 
 Route.post('/add', "AuthController.add");
 
-Route.get('/project', "ProjectController.index").middleware(['auth']);
-Route.post('/project', "ProjectController.store").middleware(['auth']);
-Route.put('/project/:id', "ProjectController.update").middleware(['auth']);
+Route.resource('/project', "ProjectController")
+  .apiOnly()
+  .middleware(['auth']);
+  
+Route.resource('/board-column', "BoardColumnController")
+  .apiOnly()
+  .middleware(['auth']);
+
+Route.resource('/backlog', "BacklogController")
+  .apiOnly()
+  .middleware(['auth']);
+
+Route.resource('/task', "TaskController")
+  .apiOnly()
+  .middleware(['auth']);
+ 

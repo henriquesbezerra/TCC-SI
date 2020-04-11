@@ -34,9 +34,12 @@ export default function AddProject(props) {
   return (
     <div>            
       <Header>
-        <Link className="goBackLink" to="/projetos">
-          <MdKeyboardBackspace size={30} color="#000" />
-        </Link>
+        <div className="df fdr alic">
+            <Link  to="/projetos" className='circleButton'>
+              <MdKeyboardBackspace size={30} color="#000" />
+            </Link>                    
+            <div style={{marginLeft: 10}}>Lista de projetos</div>
+        </div>
         <Title>Novo projeto</Title>
       </Header>
       <SimpleCard>
