@@ -8,6 +8,8 @@ import { Header, Title, WrapperBoard } from '../styles';
 import Board from '../../../components/Board';
 
 import { MdKeyboardBackspace } from 'react-icons/md';
+import Backlog from './screens/Backlog';
+import Sprints from './screens/Sprints';
 
 export default function ViewProject(props) {
   
@@ -15,15 +17,16 @@ export default function ViewProject(props) {
 
   const { authPut, get } = useFetch();
 
-  const [screen, setScreen] = useState('board');
+  const [screen, setScreen] = useState('backlog');
 
   const [project, setProject] = useState('');
+  
+  const [productBacklog, setProductBacklog] = useState({});
   
 
   const getProject = async() => {    
     try {      
-      const result = await get(`/project/${match.params.id}`);
-      console.log('result: ', result);  
+      const result = await get(`/project/${match.params.id}`);      
       setProject(result);
     } catch (e) {
       console.log('error: ', e); 
@@ -34,6 +37,16 @@ export default function ViewProject(props) {
   useEffect(()=>{
     getProject();
   },[]);
+
+  useEffect(()=>{
+    if(project){
+
+      if(project.backlogs.length){
+        setProductBacklog(project.backlogs.filter(item=>item.type === 1)[0]);
+      }
+      console.log('result: ', project.backlogs);  
+    }
+  },[project]);
 
 
   return (
@@ -60,20 +73,16 @@ export default function ViewProject(props) {
         ) : null
       }
       {
-        screen === 'backlog' ? (
-          <div>
-            <h1>Backlog</h1>
-
-          </div>          
+        screen === 'backlog' ? (                 
+          <Backlog data={productBacklog} />               
         ) : null
       }
 
       {
         screen === 'sprints' ? (
-          <div>
-            <h1>Sprints</h1>
-
-          </div>          
+          <WrapperBoard>        
+            <Sprints />
+          </WrapperBoard>            
         ) : null
       }
 

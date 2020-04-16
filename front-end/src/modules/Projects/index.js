@@ -45,8 +45,8 @@ export default function Projects({history}) {
                     key={item?.id}
                     title={item?.name}
                     description={item?.description}                    
-                    start_date={formatDate(item?.started_at)}
-                    end_date={formatDate(item?.ending_at)}
+                    started_at={formatDate(item?.started_at)}
+                    ending_at={formatDate(item?.ending_at)}
                 />))}
             </ContainerCards>
         </div>

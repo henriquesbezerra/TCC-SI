@@ -5,6 +5,18 @@ const Schema = use('Schema')
 
 class TasksSchema extends Schema {
   up () {
+
+    this.create('backlogs', (table) => {
+      table.increments()
+      table.integer('project_id').unsigned().nullable()
+      table.integer('type').unsigned().nullable()
+      table.string('name', 150).nullable()
+      table.date('started_at').nullable()
+      table.date('ending_at').nullable()
+      table.date('finished_at').nullable()
+      table.timestamps()
+    });
+
     this.create('tasks', (table) => {
       table.increments();
       table.integer('backlog_id')
@@ -53,6 +65,7 @@ class TasksSchema extends Schema {
   }
 
   down () {
+    this.drop('backlogs');
     this.drop('task_user')
     this.drop('tasks')
   }

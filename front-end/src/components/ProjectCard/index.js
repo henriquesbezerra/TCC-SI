@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Container } from './styles';
 
-export default function ProjectCard({title, description, client, start_date, end_date, onClick}) {
+export default function ProjectCard({title, description, client, started_at, ending_at, onClick}) {
 
   return (
     <Container onClick={onClick} style={onClick ? {cursor: 'pointer'} : {}}>
@@ -11,7 +11,7 @@ export default function ProjectCard({title, description, client, start_date, end
         <p>{description}</p>
         <p className="clientName">{client}</p>
       </main>
-      <footer>{start_date} à {end_date}</footer>
+      <footer>{started_at} à {ending_at}</footer>
     </Container>
   );
 }

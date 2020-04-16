@@ -42,18 +42,13 @@ class TaskController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const { users, backlogs, ...data} = request.all();
+    const { users, ...data} = request.all();
     
     const task = await Task.create(data);
 
     if(users && users.length > 0){
       await task.users().attach(users);
       await task.load('users');
-    }
-    
-    if(backlogs && backlogs.length > 0){
-      await task.backlogs().attach(backlogs);
-      await task.load('backlogs');
     }
 
     return task;
@@ -95,16 +90,15 @@ class TaskController {
 
     const task = await Task.findOrFail(params.id)
     
-    const { users, backlogs, ...data} = request.all();
-    
+    const { users, ...data} = request.all();
+
+    task.merge(data);
+
+    await task.save();
+
     if(users && users.length > 0){
       await task.users().attach(users);
       await task.load('users');
-    }
-    
-    if(backlogs && backlogs.length > 0){
-      await task.backlogs().attach(backlogs);
-      await task.load('backlogs');
     }
 
     return task;
