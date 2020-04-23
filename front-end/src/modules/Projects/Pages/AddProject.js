@@ -5,7 +5,7 @@ import { useFetch } from '../../../hooks/useFetch';
 
 import { Header, Title } from '../styles';
 import SimpleCard from '../../../components/SimpleCard';
-import { Form } from '../../../components/Form/styles';
+import { Form } from '../../../components/Form';
 
 import { MdKeyboardBackspace } from 'react-icons/md';
 

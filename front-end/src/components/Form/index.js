@@ -7,53 +7,50 @@ Form.label = styled.label`
 
     & p {
         color: #353535;
-        font-size: 1.5rem;
+        font-size: 1rem;
         margin: 10px 0;
     }
 
     & + label{
-        margin-top: 30px;
+        margin-top: 15px;
     }
 `;
 
-Form.input = styled.input`
+const inputBasic = `
     color: #353535;
     border-radius: 5px; 
     background: #fff;
     border: 1px solid #ccc;    
-    padding: 20px;
-    width: 100%;
+    padding: 10px;
     font-size: 1.3rem;
-    box-sizing: border-box;
-    height: 45px;
+    width: 100%;
+`;
+
+Form.input = styled.input`
+    ${inputBasic}
+    height: 35px;
 `;
 
 Form.textarea = styled.textarea`
-    color: #353535;
-    border-radius: 5px; 
-    background: #fff;
-    border: 1px solid #ccc;    
-    padding: 20px;
+    ${inputBasic}
     resize: vertical;
-    width: 100%;
-    font-size: 1.3rem;
 `;
 
 Form.button = styled.button`
     border: none;
-    border-radius: 40px;
+    border-radius: 5px;
     margin: 40px auto 0 auto;
     width: 100%;
-    padding: 20px;
+    padding: 10px;
     color: #FFF;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 1.2px;
     cursor: pointer;   
     background-color: #262199;
 
     &:hover{
-        background-color: #4b65b1;
+       opacity: 0.8;
     }
 `;

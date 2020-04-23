@@ -1,40 +1,27 @@
 import React from 'react';
 
 import { 
-    Container, 
-    BulletPriority,
-    TaskContent,
-    TaskTitle,
-    TaskDescription
+    Container,         
+    TaskTitle    
  } from './styles';
 
-import {formatDate} from '..//HelperFunctions';
-
-import Prioritys from '../Prioritys';
-
+import {Priority} from '../Priority';
 import { MdDelete } from 'react-icons/md';
 
-export default function Table({header, task}) {
+export default function TaskCard({header, onClick, task}) {
 
   return (
-    <Container className="df fdr alic jc-sb">      
-        <TaskContent className="df fdr alic jc-sb">
-            <BulletPriority color={Prioritys[task.priority].color}>
-                {Prioritys[task.priority].label}
-            </BulletPriority>
+    <Container onClick={onClick}>              
+        <div  className="content df fdr alic">
+            {task?.priority ?
+            <Priority type="bullet" label urgency={task.priority} /> : null} 
             <div>
-                <TaskTitle>{task.name || '-'}</TaskTitle>
-                <TaskDescription>{task.description || '-'}</TaskDescription>
-            </div>
-            <div>
-                {formatDate(task.started_at) || '-'}
-                à
-                {task.ending_at || '-'}
-            </div>
-        </TaskContent> 
-        <div>
-            <MdDelete size={24} color="#000" />
+                <TaskTitle>{task.name || '-'}</TaskTitle>                
+            </div>            
         </div>
+        <div className="df fdc jc-c">
+            <MdDelete size={24} color="#000" />
+        </div>        
     </Container>
   );
 }

@@ -22,6 +22,8 @@ export default function ViewProject(props) {
   const [project, setProject] = useState('');
   
   const [productBacklog, setProductBacklog] = useState({});
+  const [sprintsBacklog, setSprintsBacklog] = useState([]);
+  
   
 
   const getProject = async() => {    
@@ -42,7 +44,13 @@ export default function ViewProject(props) {
     if(project){
 
       if(project.backlogs.length){
-        setProductBacklog(project.backlogs.filter(item=>item.type === 1)[0]);
+        project.backlogs.map(item=>{
+          if(item.type === 1){
+            setProductBacklog(item);
+          }else if(item.type === 2){
+            setSprintsBacklog([...sprintsBacklog, item]);
+          }
+        });
       }
       console.log('result: ', project.backlogs);  
     }
@@ -57,10 +65,10 @@ export default function ViewProject(props) {
               <MdKeyboardBackspace size={30} color="#000" />
             </Link>                    
             <div style={{marginLeft: 10}}>Lista de projetos</div>
-        </div>
+        </div>     
         <Title>{project?.name}</Title>
       </Header>
-      <div className="df fdr alic">
+      <div className="df fdr alic" style={{marginBottom: 30}}>
         <div style={{marginRight: 10}} onClick={()=>setScreen('backlog')}>Backlog</div>
         <div style={{marginRight: 10}} onClick={()=>setScreen('sprints')}>Sprints (2)</div>
         <div style={{marginRight: 10}} onClick={()=>setScreen('board')}>Board</div>
@@ -79,10 +87,8 @@ export default function ViewProject(props) {
       }
 
       {
-        screen === 'sprints' ? (
-          <WrapperBoard>        
-            <Sprints />
-          </WrapperBoard>            
+        screen === 'sprints' ? (          
+            <Sprints data={sprintsBacklog}/>
         ) : null
       }
 

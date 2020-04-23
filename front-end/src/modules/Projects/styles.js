@@ -1,5 +1,12 @@
 import styled from "styled-components";
 
+export const ContainerCards = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-row: 100vh;
+    grid-gap: 20px;
+`;
+
 export const RowHeader = styled.div`
     display: flex;    
     flex-direction: row;
@@ -10,19 +17,10 @@ export const RowHeader = styled.div`
     }
 `;
 
-export const ContainerCards = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-row: 100vh;
-    grid-gap: 20px;
-`;
-
 export const WrapperBoard = styled.div`
     max-width: 100vw;
     overflow-x: scroll;
 `;
-
-
 
 export const Header = styled.div`
 

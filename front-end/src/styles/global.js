@@ -99,4 +99,8 @@ export default createGlobalStyle`
         align-items:center;
     }
 
+    .jc-c{
+        justify-content: center;
+    }
+
 `;

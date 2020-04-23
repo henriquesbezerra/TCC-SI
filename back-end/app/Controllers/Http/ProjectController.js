@@ -68,6 +68,7 @@ class ProjectController {
       .with('users')
       .with('backlogs')  
       .with('backlogs.tasks')    
+      .with('backlogs.tasks.users')
       .with('boardColumns').first();  
       
     return project;
