@@ -19,9 +19,11 @@ export default function Login({history}) {
   const handleLogin = async() => {
     if(email !== '' && password !== ''){
       const result = await post('/login',{email, password});
-      console.log('result: ', result);
-      localStorage.setItem('access_token',result.token);      
-      window.location.reload();
+      if(result){
+        localStorage.clear();        
+        localStorage.setItem('access_token',result.token);      
+        window.location.reload();        
+      }
     }
   }
 

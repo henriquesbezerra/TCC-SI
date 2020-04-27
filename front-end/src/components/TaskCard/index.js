@@ -6,12 +6,12 @@ import {
  } from './styles';
 
 import {Priority} from '../Priority';
-import { MdDelete } from 'react-icons/md';
+import { MdDelete, MdEdit, MdRemoveRedEye } from 'react-icons/md';
 
-export default function TaskCard({header, onClick, task}) {
+export default function TaskCard({header, onClick, onEdit, onDelete, task}) {
 
   return (
-    <Container onClick={onClick}>              
+    <Container >              
         <div  className="content df fdr alic">
             {task?.priority ?
             <Priority type="bullet" label urgency={task.priority} /> : null} 
@@ -19,8 +19,10 @@ export default function TaskCard({header, onClick, task}) {
                 <TaskTitle>{task.name || '-'}</TaskTitle>                
             </div>            
         </div>
-        <div className="df fdc jc-c">
-            <MdDelete size={24} color="#000" />
+        <div className="df fdr jc-c alic">
+            <MdRemoveRedEye size={24} color="#000" style={{marginRight: 10, cursor: 'pointer'}} onClick={onClick} />
+            <MdEdit size={24} color="#000" style={{marginRight: 10, cursor: 'pointer'}} onClick={onEdit} />
+            <MdDelete size={24} color="#000" style={{cursor: 'pointer'}} onClick={onDelete} />
         </div>        
     </Container>
   );

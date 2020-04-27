@@ -99,6 +99,10 @@ export default createGlobalStyle`
         align-items:center;
     }
 
+    .alib{
+        align-items: baseline;
+    }
+
     .jc-c{
         justify-content: center;
     }

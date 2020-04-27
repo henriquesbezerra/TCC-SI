@@ -2,6 +2,16 @@ import styled from 'styled-components';
 
 export const Form = styled.form``;
 
+const inputBasic = `
+    color: #353535;
+    border-radius: 5px; 
+    background: #fff;
+    border: 1px solid #ccc;    
+    padding: 10px;
+    font-size: 1.1rem;
+    width: 100%;
+`;
+
 Form.label = styled.label`
     display: block;
 
@@ -14,16 +24,20 @@ Form.label = styled.label`
     & + label{
         margin-top: 15px;
     }
+
+    .react-datepicker__input-container input{
+        ${inputBasic}
+    }
 `;
 
-const inputBasic = `
-    color: #353535;
-    border-radius: 5px; 
-    background: #fff;
-    border: 1px solid #ccc;    
-    padding: 10px;
-    font-size: 1.3rem;
-    width: 100%;
+Form.dateRange = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    
+    .date:first-child{
+        margin-right: 10px
+    }
 `;
 
 Form.input = styled.input`

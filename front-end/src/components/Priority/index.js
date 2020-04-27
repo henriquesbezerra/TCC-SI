@@ -27,10 +27,10 @@ const priority = {
 const Priority = ({label, type, urgency }) => {    
     return(<>
         {type === "bullet" ? (
-            <BulletPriority color={priority[urgency].color} />
+            <BulletPriority color={priority[urgency]?.color} />
         ): null}  
         {type === "square" ? (
-            <SquarePriority color={priority[urgency].color} />                
+            <SquarePriority color={priority[urgency]?.color} />                
         ): null}  
     </>);
 }

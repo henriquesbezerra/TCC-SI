@@ -10,6 +10,7 @@ import FormTasks from '../../../../forms/Tasks';
 export default function Backlog({data}) {    
     
     const [currentTask, setCurrentTask] = useState({});
+    const [editTask, SetEditTask] = useState(false);
     const [formTask, toggleFormTask] = useState(false);
     
     const toggleTask = item => {   
@@ -17,6 +18,16 @@ export default function Backlog({data}) {
         setCurrentTask(item);
         localStorage.setItem('current-backlog-task',JSON.stringify(item));
     };
+
+    const handleEdit = item => {
+        console.log('EITAA',item);
+        toggleFormTask(true);
+        SetEditTask(item);
+    }
+
+    const handleDelete = id => {
+        
+    }
 
     useEffect(()=>{
         if(data.tasks && data.tasks.length){            
@@ -34,7 +45,13 @@ export default function Backlog({data}) {
             <div>
                 <AddCard label="Nova tarefa" onClick={()=>toggleFormTask(!formTask)} />
                 {data.tasks ? data.tasks.map( (item, idx)=>(
-                    <TaskCard key={`Task${item.id}`} task={item} onClick={()=>toggleTask(item)}/>
+                    <TaskCard 
+                        key={`Task${item.id}`} 
+                        task={item} 
+                        onClick={()=>toggleTask(item)}
+                        onEdit={()=>handleEdit(item)}
+                        onDelete={()=>handleDelete(item.id)}
+                    />
                 )):null} 
             </div>
             {currentTask && !formTask ? (
@@ -88,7 +105,7 @@ export default function Backlog({data}) {
                 </SimpleCard>          
             ):null}   
 
-            {formTask && <FormTasks />}                      
+            {formTask && <FormTasks backlogId={data.id} task={editTask} />}                      
         </ContainerPages> 
     )
 }
