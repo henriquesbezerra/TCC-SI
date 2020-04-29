@@ -6,9 +6,6 @@ const API = axios.create({
     baseURL: process.env.REACT_APP_API_URL
 });
 
-
-console.log('aaccess_token',ACCESS_TOKEN);
-
 export const useFetch = () =>{
 
     const post = async (path, data) => {

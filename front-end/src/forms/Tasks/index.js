@@ -7,6 +7,7 @@ import Select from 'react-select'
 
 import moment from 'moment';
 
+
 import "react-datepicker/dist/react-datepicker.css";
 
 const options = [
@@ -24,17 +25,17 @@ const optionsPriority = [
 
 export default ({task, backlogId, ...props}) => {    
 
-    const { authPost } = useFetch();
+    const { authPost, authPut } = useFetch();
 
-    const [name, setName] = useState(task?.name || '');
-    const [description, setDescription] = useState(task?.description || '');
-    const [priority, setPriority] = useState(task?.priority || '');
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [priority, setPriority] = useState('');
+    const [currentPriority, setCurrentPriority] = useState({});
     const [started_at, setStartedAt] = useState('');
     const [ending_at, setEndingAt] = useState('');
-    const [users, setUsers] = useState(task?.users || []);
-
-    const [selectUsers, setSelectUsers] = useState(task?.users || []);
-
+    const [users, setUsers] = useState([]);
+    const [selectUsers, setSelectUsers] = useState([]);
+    
     const handleSave = async(e) => {
         e.preventDefault();
         try {            
@@ -47,12 +48,15 @@ export default ({task, backlogId, ...props}) => {
                 users,
                 backlog_id: backlogId    
             };
-
+            
+            let result = null;
+            
             if(task){
                 data.id = task.id;
+                result = await authPut('/task', data);
+            }else{
+                result = await authPost('/task', data);
             }
-            
-            const result = await authPost('/task', data);
             
             if(result){
                 window.location.reload();
@@ -65,12 +69,23 @@ export default ({task, backlogId, ...props}) => {
     useEffect(()=>{
         if(selectUsers?.length){
             let usersId = selectUsers.map(user=>user.value);
-            setUsers(usersId);
-            console.log('USERS',usersId);
+            setUsers(usersId);            
         }else{
             setUsers([])
         }
     },[selectUsers]);
+
+    useEffect(()=>{
+        if(Object.keys(task).length){
+            console.log('CHORA',task);
+            setName(task.name);
+            setDescription(task.description);
+
+            let objPriority = optionsPriority.filter(item=>item.value===task.priority);
+            console.log(objPriority);
+            setCurrentPriority(objPriority[0]);
+        }
+    },[task]);
 
     return (
         <SimpleCard>
@@ -92,6 +107,7 @@ export default ({task, backlogId, ...props}) => {
                     placeholder="Selecione"                    
                     onChange={(value)=>setPriority(value.value)}
                     options={optionsPriority} 
+                    value={currentPriority}
                 />
             </Form.label>
 

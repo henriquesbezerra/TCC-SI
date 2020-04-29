@@ -18,7 +18,7 @@ export default function AddProject(props) {
   const [titulo, setTitulo] = useState('');
   const [cliente, setCliente] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [users, setUsers] = useState([]);
+  const [users ] = useState([]);
 
   const handleSave = async(e) => {
     e.preventDefault();

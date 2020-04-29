@@ -13,9 +13,9 @@ import Sprints from './screens/Sprints';
 
 export default function ViewProject(props) {
   
-  const { history, match } = props;
+  const { match } = props;
 
-  const { authPut, get } = useFetch();
+  const { get } = useFetch();
 
   const [screen, setScreen] = useState('backlog');
 
@@ -25,37 +25,26 @@ export default function ViewProject(props) {
   const [sprintsBacklog, setSprintsBacklog] = useState([]);
   
   
-
-  const getProject = async() => {    
-    try {      
-      const result = await get(`/project/${match.params.id}`);      
-      setProject(result);
-    } catch (e) {
-      console.log('error: ', e); 
-    }
-  }
-
-
-  useEffect(()=>{
-    getProject();
-  },[]);
-
-  useEffect(()=>{
-    if(project){
-
-      if(project.backlogs.length){
-        project.backlogs.map(item=>{
+  useEffect(()=>{    
+    const getProject = async() => {    
+      try {      
+        const result = await get(`/project/${match.params.id}`);      
+        setProject(result);
+        // eslint-disable-next-line
+        result.backlogs.map(item=>{
           if(item.type === 1){
             setProductBacklog(item);
           }else if(item.type === 2){
             setSprintsBacklog([...sprintsBacklog, item]);
           }
         });
+      } catch (e) {
+        console.log('error: ', e); 
       }
-      console.log('result: ', project.backlogs);  
     }
-  },[project]);
-
+    getProject();
+    // eslint-disable-next-line
+  },[]);
 
   return (
     <div>            

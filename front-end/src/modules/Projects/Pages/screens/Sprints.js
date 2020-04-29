@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import moment from 'moment';
-import priority, { Priority } from '../../../../components/Priority';
+// import priority, { Priority } from '../../../../components/Priority';
 import SimpleCard from '../../../../components/SimpleCard';
 import TaskCard from '../../../../components/TaskCard';
 

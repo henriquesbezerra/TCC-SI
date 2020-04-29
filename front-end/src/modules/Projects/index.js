@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import { ContainerCards, Title, Header } from './styles';
 
-import { MdAdd, MdCreate } from 'react-icons/md';
+import { MdAdd  } from 'react-icons/md';
 
 
 import ProjectCard from '../../components/ProjectCard';
