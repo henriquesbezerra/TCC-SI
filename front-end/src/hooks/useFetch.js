@@ -36,14 +36,14 @@ export const useFetch = () =>{
         return null;       
     }
 
-    const authPut = async (path, data) => {
+    const authPut = async (path, {id, ...data}) => {
         try {
-            const response = await API.post(path, data, {
+            const response = await API.put(path+`/${id}`, data, {
                 headers:{
                     authorization: `Bearer ${ACCESS_TOKEN}`
                 }
             });           
-            if(response){
+            if(response){                
                 return response.data;
             }            
         } catch (e) {
@@ -68,10 +68,27 @@ export const useFetch = () =>{
         return null;
     }
 
+    const authDelete = async (path, id) => {
+        try {
+            const response = await API.delete(path+`/${id}`, {
+                headers:{
+                    authorization: `Bearer ${ACCESS_TOKEN}`
+                }
+            });           
+            if(response){                
+                return response.data;
+            }            
+        } catch (e) {
+            console.log('Erro to POST data to ' + path, e);
+        }
+        return null;       
+    }
+
     return {
         post,
         authPost,
         authPut,
+        authDelete,
         get
     }
 }

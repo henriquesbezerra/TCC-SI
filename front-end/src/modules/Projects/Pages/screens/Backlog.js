@@ -3,9 +3,11 @@ import TaskCard from '../../../../components/TaskCard';
 import AddCard from '../../../../components/AddCard';
 import { ContainerPages } from '../styles';
 import FormTasks from '../../../../forms/Tasks';
+import _ from 'lodash';
 
 export default function Backlog({data}) {    
         
+    const [tasks, setTasks] = useState([]);
     const [currentTask, setCurrentTask] = useState({});        
     
     const toggleTask = item => {           
@@ -15,12 +17,14 @@ export default function Backlog({data}) {
     
     useEffect(()=>{
         if(data.tasks && data.tasks.length){            
-            let storagedTask = localStorage.getItem('current-backlog-task');            
-            if(storagedTask){                
+            let storagedTask = localStorage.getItem('current-backlog-task');                        
+            if(storagedTask.length > 2){                
                 setCurrentTask(JSON.parse(storagedTask));
             }else{
                 toggleTask(data.tasks[0]);                
-            }            
+            }   
+            
+            setTasks(_.orderBy(data.tasks, 'updated_at', 'desc'));
         }
     },[data]);    
 
@@ -28,13 +32,13 @@ export default function Backlog({data}) {
         <ContainerPages>
             <div>
                 <AddCard label="Nova tarefa" onClick={()=>toggleTask({})} />
-                {data.tasks ? data.tasks.map( item =>(
+                {tasks.map( item =>(
                     <TaskCard 
                         key={`Task${item.id}`} 
                         task={item} 
                         onClick={()=>toggleTask(item)}                       
                     />
-                )):null} 
+                ))} 
             </div>            
             <FormTasks backlogId={data.id} task={currentTask} />
         </ContainerPages> 

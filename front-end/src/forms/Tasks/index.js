@@ -2,13 +2,14 @@ import React, {useState, useEffect} from 'react';
 import { useFetch } from '../../hooks/useFetch';
 import SimpleCard from '../../components/SimpleCard';
 import { Form } from '../../components/Form';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale, setDefaultLocale  } from 'react-datepicker';
+import pt from 'date-fns/locale/pt';
 import Select from 'react-select'
-
 import moment from 'moment';
-
-
 import "react-datepicker/dist/react-datepicker.css";
+
+registerLocale('pt', pt);
+setDefaultLocale('pt');
 
 const options = [
   { value: 1, label: 'Chocolate' },
@@ -25,15 +26,15 @@ const optionsPriority = [
 
 export default ({task, backlogId, ...props}) => {    
 
-    const { authPost, authPut } = useFetch();
+    const { authPost, authPut, authDelete } = useFetch();
 
     const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [priority, setPriority] = useState('');
+    const [description, setDescription] = useState('');    
     const [currentPriority, setCurrentPriority] = useState({});
     const [started_at, setStartedAt] = useState('');
     const [ending_at, setEndingAt] = useState('');
     const [users, setUsers] = useState([]);
+    const [usersOptions, setUsersOptions] = useState([]);
     const [selectUsers, setSelectUsers] = useState([]);
     
     const handleSave = async(e) => {
@@ -42,7 +43,7 @@ export default ({task, backlogId, ...props}) => {
             let data = {
                 name,
                 description,
-                priority,
+                priority: currentPriority?.value,
                 started_at: started_at ? moment(started_at).format('YYYY-MM-DD') : '',
                 ending_at: ending_at ? moment(ending_at).format('YYYY-MM-DD') : '',
                 users,
@@ -51,20 +52,32 @@ export default ({task, backlogId, ...props}) => {
             
             let result = null;
             
-            if(task){
-                data.id = task.id;
+            if(task.id){
+                data.id = task.id;                
                 result = await authPut('/task', data);
-            }else{
+            }else{                
                 result = await authPost('/task', data);
             }
             
             if(result){
+                localStorage.setItem('current-backlog-task',JSON.stringify(result));
                 window.location.reload();
             }            
         } catch (error) {
             console.log('error: ', e); 
         }
     }
+
+    const handleDelete = async() => {
+        if(task?.id){
+            let result = await authDelete('/task',task.id);
+            if(result){
+                localStorage.setItem('current-backlog-task',JSON.stringify({}));
+                window.location.reload();
+            }
+        }
+    };
+
 
     useEffect(()=>{
         if(selectUsers?.length){
@@ -75,16 +88,25 @@ export default ({task, backlogId, ...props}) => {
         }
     },[selectUsers]);
 
-    useEffect(()=>{
-        if(Object.keys(task).length){
-            console.log('CHORA',task);
-            setName(task.name);
-            setDescription(task.description);
-
-            let objPriority = optionsPriority.filter(item=>item.value===task.priority);
-            console.log(objPriority);
-            setCurrentPriority(objPriority[0]);
-        }
+    useEffect(()=>{                    
+        setName(task?.name || '');
+        setDescription(task?.description || '');        
+        setStartedAt(task?.started_at ? new Date(task?.started_at) : '');
+        setEndingAt(task?.ending_at ? new Date(task?.ending_at) : '');        
+        setCurrentPriority(
+            task?.priority ? 
+            optionsPriority.filter(item=> 
+                item.value === task.priority)[0] 
+            : null
+        );        
+        setUsersOptions(
+            task?.users?.length ? 
+            task.users.map(item=>({
+                value: item.id, 
+                label: item.username
+            })) : []
+        );            
+        
     },[task]);
 
     return (
@@ -105,7 +127,7 @@ export default ({task, backlogId, ...props}) => {
                 <p>Prioridade</p>                
                 <Select                     
                     placeholder="Selecione"                    
-                    onChange={(value)=>setPriority(value.value)}
+                    onChange={(value)=>setCurrentPriority(value)}
                     options={optionsPriority} 
                     value={currentPriority}
                 />
@@ -114,8 +136,10 @@ export default ({task, backlogId, ...props}) => {
             <Form.dateRange className="df fdr alib"> 
                 <Form.label className="date">
                     <p>Início</p>
-                    <DatePicker                        
-                        placeholderText="dd/mm/aaaa"
+                    <DatePicker      
+                        locale="pt"                  
+                        placeholderText="dd/mm/aaaa"    
+                        dateFormat="dd/MM/yyyy"                    
                         selected={started_at}
                         onChange={date => setStartedAt(date)}
                         selectsStart
@@ -125,8 +149,10 @@ export default ({task, backlogId, ...props}) => {
                 </Form.label>
                 <Form.label className="date">
                     <p>Término</p>
-                    <DatePicker                                           
-                        placeholderText="dd/mm/aaaa"   
+                    <DatePicker    
+                        locale="pt"                                       
+                        placeholderText="dd/mm/aaaa" 
+                        dateFormat="dd/MM/yyyy"  
                         selected={ending_at}
                         onChange={date => setEndingAt(date)}
                         selectsEnd
@@ -143,10 +169,12 @@ export default ({task, backlogId, ...props}) => {
                     isMulti
                     onChange={(value)=>setSelectUsers(value)}
                     options={options} 
+                    value={usersOptions}
                 />
             </Form.label>
             <Form.button type="submit" >Salvar</Form.button>
             </Form>
+            <div onClick={()=>handleDelete()}>Deletar</div>
         </SimpleCard>
     )
 }
