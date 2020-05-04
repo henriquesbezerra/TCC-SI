@@ -24,6 +24,8 @@ Route.post('/login', "AuthController.login");
 
 Route.post('/add', "AuthController.add");
 
+Route.get('/users', "UserController.index").middleware(['auth']);
+
 Route.resource('/project', "ProjectController")
   .apiOnly()
   .middleware(['auth']);
@@ -39,4 +41,4 @@ Route.resource('/backlog', "BacklogController")
 Route.resource('/task', "TaskController")
   .apiOnly()
   .middleware(['auth']);
- 
+   
