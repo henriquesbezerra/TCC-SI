@@ -5,7 +5,7 @@ import { ContainerPages } from '../styles';
 import FormTasks from '../../../../forms/Tasks';
 import _ from 'lodash';
 
-export default function Backlog({data}) {    
+export default function Backlog({data, users}) {    
         
     const [tasks, setTasks] = useState([]);
     const [currentTask, setCurrentTask] = useState({});        
@@ -18,12 +18,11 @@ export default function Backlog({data}) {
     useEffect(()=>{
         if(data.tasks && data.tasks.length){            
             let storagedTask = localStorage.getItem('current-backlog-task');                        
-            if(storagedTask.length > 2){                
+            if(storagedTask?.length > 2){                
                 setCurrentTask(JSON.parse(storagedTask));
             }else{
                 toggleTask(data.tasks[0]);                
-            }   
-            
+            }               
             setTasks(_.orderBy(data.tasks, 'updated_at', 'desc'));
         }
     },[data]);    
@@ -40,7 +39,7 @@ export default function Backlog({data}) {
                     />
                 ))} 
             </div>            
-            <FormTasks backlogId={data.id} task={currentTask} />
+            <FormTasks backlogId={data.id} task={currentTask} users={users}/>
         </ContainerPages> 
     )
 }

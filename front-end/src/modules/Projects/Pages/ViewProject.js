@@ -17,12 +17,14 @@ export default function ViewProject(props) {
 
   const { get } = useFetch();
 
-  const [screen, setScreen] = useState('backlog');
+  const [screen, setScreen] = useState('sprints');
 
   const [project, setProject] = useState('');
   
   const [productBacklog, setProductBacklog] = useState({});
   const [sprintsBacklog, setSprintsBacklog] = useState([]);
+
+  const [users, setUsers] = useState([]);
   
   
   useEffect(()=>{    
@@ -30,19 +32,40 @@ export default function ViewProject(props) {
       try {      
         const result = await get(`/project/${match.params.id}`);      
         setProject(result);
-        // eslint-disable-next-line
+        console.log(result);
+        let sprints = [];
+
+        // eslint-disable-next-line        
         result.backlogs.map(item=>{
           if(item.type === 1){
             setProductBacklog(item);
           }else if(item.type === 2){
-            setSprintsBacklog([...sprintsBacklog, item]);
+            sprints.push(item);
           }
         });
+        setSprintsBacklog(sprints);
       } catch (e) {
         console.log('error: ', e); 
       }
     }
     getProject();
+
+    const getUsers = async()=>{
+      try {
+        const result = await get(`/users`);              
+        if(result){
+          setUsers(
+            result.map(item=>({
+                value: item.id, 
+                label: item.username
+            }))
+          );
+        }
+      } catch (e) {
+        console.log('Erro to fecth users');
+      }
+    }
+    getUsers();
     // eslint-disable-next-line
   },[]);
 
@@ -59,7 +82,7 @@ export default function ViewProject(props) {
       </Header>
       <div className="df fdr alic" style={{marginBottom: 30}}>
         <div style={{marginRight: 10}} onClick={()=>setScreen('backlog')}>Backlog</div>
-        <div style={{marginRight: 10}} onClick={()=>setScreen('sprints')}>Sprints (2)</div>
+        <div style={{marginRight: 10}} onClick={()=>setScreen('sprints')}>Sprints ({sprintsBacklog?.length})</div>
         <div style={{marginRight: 10}} onClick={()=>setScreen('board')}>Board</div>
       </div>
       {
@@ -71,13 +94,13 @@ export default function ViewProject(props) {
       }
       {
         screen === 'backlog' ? (                 
-          <Backlog data={productBacklog} />               
+          <Backlog data={productBacklog} users={users}/>               
         ) : null
       }
 
       {
         screen === 'sprints' ? (          
-            <Sprints data={sprintsBacklog}/>
+            <Sprints projectId={project?.id} data={sprintsBacklog}/>
         ) : null
       }
 

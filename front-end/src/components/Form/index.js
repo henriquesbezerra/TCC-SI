@@ -8,8 +8,13 @@ const inputBasic = `
     background: #fff;
     border: 1px solid #ccc;    
     padding: 10px;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     width: 100%;
+`;
+
+Form.title = styled.div`
+    margin: 15px 0;
+    font-size: 1.2rem;
 `;
 
 Form.label = styled.label`
@@ -57,7 +62,7 @@ Form.button = styled.button`
     width: 100%;
     padding: 10px;
     color: #FFF;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
     font-weight: 400;
     letter-spacing: 1.2px;
@@ -67,4 +72,12 @@ Form.button = styled.button`
     &:hover{
        opacity: 0.8;
     }
+`;
+Form.delete = styled.div`
+    padding: 6px;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 1rem;
+    color: #6d6e6b;
+    cursor: pointer;
 `;

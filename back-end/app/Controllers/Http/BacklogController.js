@@ -17,11 +17,11 @@ class BacklogController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    // const projects = await Project.query()
-    //   .with('users')
-    //   .with('backlogs')
-    //   .with('boardColumns').fetch();
-    // return projects;
+    const projects = await Project.query()
+      .with('users')
+      .with('backlogs')
+      .with('boardColumns').fetch();
+    return projects;
   }
 
   /**
@@ -68,20 +68,15 @@ class BacklogController {
    */
   async update ({ params, request, response }) {
 
-    const project = await Project.findOrFail(params.id)
+    const backlog = await Backlog.findOrFail(params.id)
 
-    const { users, ...data} = request.all();
+    const {...data} = request.all();
     
-    project.merge(data);
+    backlog.merge(data);
 
-    await project.save();
-
-    if(users && users.length > 0){
-      await project.users().sync(users);
-      await project.load('users');
-    }
-
-    return project;
+    await backlog.save();
+  
+    return backlog;
   }
 
   /**

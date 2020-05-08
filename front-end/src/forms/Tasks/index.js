@@ -11,12 +11,6 @@ import "react-datepicker/dist/react-datepicker.css";
 registerLocale('pt', pt);
 setDefaultLocale('pt');
 
-const options = [
-  { value: 1, label: 'Chocolate' },
-  { value: 2, label: 'Strawberry' },
-  { value: 3, label: 'Vanilla' }
-];
-
 const optionsPriority = [
     { value: 0, label: 'Emergência' },
     { value: 1, label: 'Urgência' },
@@ -34,8 +28,7 @@ export default ({task, backlogId, ...props}) => {
     const [started_at, setStartedAt] = useState('');
     const [ending_at, setEndingAt] = useState('');
     const [users, setUsers] = useState([]);
-    const [usersOptions, setUsersOptions] = useState([]);
-    const [selectUsers, setSelectUsers] = useState([]);
+    const [usersOptions, setUsersOptions] = useState([]);    
     
     const handleSave = async(e) => {
         e.preventDefault();
@@ -78,15 +71,33 @@ export default ({task, backlogId, ...props}) => {
         }
     };
 
-
-    useEffect(()=>{
-        if(selectUsers?.length){
-            let usersId = selectUsers.map(user=>user.value);
-            setUsers(usersId);            
-        }else{
-            setUsers([])
-        }
-    },[selectUsers]);
+    const selectUser = (value, { action }) => {
+        const actions = {
+            "select-option": ()=>{                
+                let usersId = value.map(user=>user.value);            
+                setUsers(usersId);           
+                setUsersOptions(value);             
+            },
+            "remove-value":()=>{
+                if(value?.length){
+                    let usersId = value.map(user=>user.value);            
+                    setUsers(usersId);
+                }else{
+                    setUsers(null);
+                }                
+                setUsersOptions(value);
+            },
+            "clear":()=>{                
+                setUsers([]);
+                setUsersOptions([]);
+            },
+            "deselect-option":()=>{},
+            "pop-value":()=>{},
+            "set-value":()=>{},
+            "clear-option":()=>{}
+        };
+        actions[action]();        
+    };
 
     useEffect(()=>{                    
         setName(task?.name || '');
@@ -98,7 +109,13 @@ export default ({task, backlogId, ...props}) => {
             optionsPriority.filter(item=> 
                 item.value === task.priority)[0] 
             : null
-        );        
+        );              
+        
+        setUsers(
+            task?.users?.length ? 
+            task.users.map(user => user.id) : []
+        );     
+
         setUsersOptions(
             task?.users?.length ? 
             task.users.map(item=>({
@@ -109,9 +126,10 @@ export default ({task, backlogId, ...props}) => {
         
     },[task]);
 
+    
     return (
         <SimpleCard>
-            {task ? 'Editar tarefas' : 'Nova Tarefa'}
+            <Form.title>{task.id ? 'Editar tarefa' : 'Nova Tarefa'}</Form.title>
            <Form onSubmit={(e)=>handleSave(e)}>
             <Form.label>
                 <p>Nome</p>
@@ -167,14 +185,14 @@ export default ({task, backlogId, ...props}) => {
                 <Select                     
                     placeholder="Selecione"
                     isMulti
-                    onChange={(value)=>setSelectUsers(value)}
-                    options={options} 
+                    onChange={selectUser}
+                    options={props?.users} 
                     value={usersOptions}
                 />
             </Form.label>
-            <Form.button type="submit" >Salvar</Form.button>
+            <Form.button type="submit" >{task.id ? 'Atualizar' : 'Salvar'}</Form.button>
             </Form>
-            <div onClick={()=>handleDelete()}>Deletar</div>
+            <Form.delete onClick={()=>handleDelete()}>Deletar</Form.delete>
         </SimpleCard>
     )
 }
