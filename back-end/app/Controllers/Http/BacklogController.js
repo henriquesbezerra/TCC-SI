@@ -88,6 +88,13 @@ class BacklogController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const backlog = await Backlog.findOrFail(params.id)
+    try {
+      let result = await backlog.delete();
+      return result;
+    } catch (e) {
+      return e;
+    }
   }
 }
 

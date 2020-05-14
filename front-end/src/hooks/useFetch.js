@@ -70,6 +70,8 @@ export const useFetch = () =>{
 
     const authDelete = async (path, id) => {
         try {
+            console.log(path, id);
+
             const response = await API.delete(path+`/${id}`, {
                 headers:{
                     authorization: `Bearer ${ACCESS_TOKEN}`

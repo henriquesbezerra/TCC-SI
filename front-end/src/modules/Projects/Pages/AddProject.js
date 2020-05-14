@@ -15,17 +15,17 @@ export default function AddProject(props) {
 
   const { authPost } = useFetch();
 
-  const [titulo, setTitulo] = useState('');
-  const [cliente, setCliente] = useState('');
-  const [descricao, setDescricao] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');  
   const [users ] = useState([]);
 
   const handleSave = async(e) => {
     e.preventDefault();
     try {      
-      const result = await authPost('/project', {titulo, cliente, descricao, users});
-      console.log('result: ', result);  
-      history.replace({pathname: '/projetos'})
+      const result = await authPost('/project', {name, description, users});
+      if(result){
+        history.replace({pathname: '/projetos'})
+      }
     } catch (error) {
       console.log('error: ', e); 
     }
@@ -46,17 +46,12 @@ export default function AddProject(props) {
         <Form onSubmit={(e)=>handleSave(e)}>
           <Form.label>
             <p>Título</p>
-            <Form.input type="text" required value={titulo} onChange={e=>setTitulo(e.target.value)}/>
+            <Form.input type="text" required value={name} onChange={e=>setName(e.target.value)}/>
           </Form.label>
 
           <Form.label>
             <p>Descrição</p>
-            <Form.textarea required value={descricao} onChange={e=>setDescricao(e.target.value)}></Form.textarea>
-          </Form.label>
-
-          <Form.label>
-            <p>Cliente</p>
-            <Form.input required type="text" value={cliente} onChange={e=>setCliente(e.target.value)}/>
+            <Form.textarea required value={description} onChange={e=>setDescription(e.target.value)}></Form.textarea>
           </Form.label>
 
           <Form.button type="submit" >Salvar</Form.button>

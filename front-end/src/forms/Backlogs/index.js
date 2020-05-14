@@ -35,12 +35,16 @@ export default ({projectId, backlog,  ...props}) => {
                 data.id = backlog.id;                
                 result = await authPut('/backlog', data);
             }else{                
+                console.log('VAMOS SALVAR');
                 result = await authPost('/backlog', data);
             }
             
             if(result){
-                localStorage.setItem('current-sprint',JSON.stringify(result));
-                window.location.reload();
+                localStorage.setItem('current-sprint', JSON.stringify(result));
+                console.log(result);
+                setTimeout(()=>{
+                    window.location.reload();
+                },200);                
             }            
         } catch (error) {
             console.log('error: ', e); 
@@ -50,7 +54,7 @@ export default ({projectId, backlog,  ...props}) => {
     const handleDelete = async() => {
         if(backlog?.id){
             let result = await authDelete('/backlog',backlog.id);
-            if(result){
+            if(result){                
                 localStorage.setItem('current-sprint',JSON.stringify({}));
                 window.location.reload();
             }

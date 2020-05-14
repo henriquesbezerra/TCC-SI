@@ -6,7 +6,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node ace test"
+    "test": "node ace test",
+    "serve": "npx @adonisjs/cli serve --dev",
+    "migration": "npx @adonisjs/cli migration:run",   
+    "key:generate": "npx @adonisjs/cli key:generate",
+    "route:list": "npx @adonisjs/cli route:list"
   },
   "keywords": [
     "adonisjs",
