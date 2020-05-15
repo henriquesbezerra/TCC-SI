@@ -58,7 +58,7 @@ Form.textarea = styled.textarea`
 Form.button = styled.button`
     border: none;
     border-radius: 5px;
-    margin: 40px auto 0 auto;
+    margin: auto;
     width: 100%;
     padding: 10px;
     color: #FFF;
@@ -73,7 +73,13 @@ Form.button = styled.button`
        opacity: 0.8;
     }
 `;
-Form.delete = styled.div`
+
+Form.line = styled.div`
+    padding: 6px;
+    margin: 10px 0;    
+`;
+
+Form.action = styled.div`
     padding: 6px;
     margin: 10px 0;
     text-align: center;

@@ -21,25 +21,32 @@ const optionsPriority = [
 export default ({task, backlogId, ...props}) => {    
 
     const { authPost, authPut, authDelete } = useFetch();
-
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');    
-    const [currentPriority, setCurrentPriority] = useState({});
-    const [started_at, setStartedAt] = useState('');
-    const [ending_at, setEndingAt] = useState('');
-    const [users, setUsers] = useState([]);
-    const [usersOptions, setUsersOptions] = useState([]);    
     
+    const [state, updateState] = useState({
+        name: '',
+        description: '',
+        currentPriority: {},
+        started_at: '',
+        ending_at: '',
+        users: [],
+        usersOptions: [],
+        screen: 'add'
+    });
+
+    const setState = (key, value) =>{
+        updateState({...state, [key]:value });
+    };
+
     const handleSave = async(e) => {
         e.preventDefault();
         try {            
             let data = {
-                name,
-                description,
-                priority: currentPriority?.value,
-                started_at: started_at ? moment(started_at).format('YYYY-MM-DD') : '',
-                ending_at: ending_at ? moment(ending_at).format('YYYY-MM-DD') : '',
-                users,
+                name: state.name,
+                description: state.description,
+                priority: state.currentPriority?.value,
+                started_at: state.started_at ? moment(state.started_at).format('YYYY-MM-DD') : '',
+                ending_at: state.ending_at ? moment(state.ending_at).format('YYYY-MM-DD') : '',  
+                users: state.users,              
                 backlog_id: backlogId    
             };
             
@@ -61,6 +68,20 @@ export default ({task, backlogId, ...props}) => {
         }
     }
 
+    const handleBacklog = async(e) => {        
+        e.preventDefault();
+        console.log('MUDAR SPRINT');
+        // try {            
+        //     let result = await authPut('/task', {id, backlog_id});            
+        //     if(result){
+        //         localStorage.setItem('current-backlog-task', JSON.stringify(result));
+        //         window.location.reload();
+        //     }            
+        // } catch (e) {
+        //     console.log('error: ', e); 
+        // }
+    }
+
     const handleDelete = async() => {
         if(task?.id){
             let result = await authDelete('/task',task.id);
@@ -75,21 +96,27 @@ export default ({task, backlogId, ...props}) => {
         const actions = {
             "select-option": ()=>{                
                 let usersId = value.map(user=>user.value);            
-                setUsers(usersId);           
-                setUsersOptions(value);             
+                updateState({
+                    ...state,
+                    users: usersId,
+                    usersOptions: value
+                });                          
             },
             "remove-value":()=>{
                 if(value?.length){
                     let usersId = value.map(user=>user.value);            
-                    setUsers(usersId);
+                    setState('users', usersId);
                 }else{
-                    setUsers(null);
+                    setState('users', null);
                 }                
-                setUsersOptions(value);
+                setState('usersOptions', value);
             },
             "clear":()=>{                
-                setUsers([]);
-                setUsersOptions([]);
+                updateState({
+                    ...state,
+                    users: [],
+                    usersOptions: []
+                });
             },
             "deselect-option":()=>{},
             "pop-value":()=>{},
@@ -99,100 +126,120 @@ export default ({task, backlogId, ...props}) => {
         actions[action]();        
     };
 
-    useEffect(()=>{                    
-        setName(task?.name || '');
-        setDescription(task?.description || '');        
-        setStartedAt(task?.started_at ? new Date(task?.started_at) : '');
-        setEndingAt(task?.ending_at ? new Date(task?.ending_at) : '');        
-        setCurrentPriority(
-            task?.priority ? 
-            optionsPriority.filter(item=> 
-                item.value === task.priority)[0] 
-            : null
-        );              
-        
-        setUsers(
-            task?.users?.length ? 
-            task.users.map(user => user.id) : []
-        );     
+    useEffect(()=>{     
+        updateState({
+            ...state,
+            name: task?.name || '',
+            description: task?.description || '',
+            started_at: task?.started_at ? new Date(task?.started_at) : '',
+            ending_at: task?.ending_at ? new Date(task?.ending_at) : '',
+            
+            currentPriority: task?.priority ? 
+                optionsPriority.filter(item=> 
+                    item.value === task.priority)[0] 
+                : null,
 
-        setUsersOptions(
-            task?.users?.length ? 
+            users: task?.users?.length ? 
+            task.users.map(user => user.id) : [],
+
+            usersOptions:  task?.users?.length ? 
             task.users.map(item=>({
                 value: item.id, 
                 label: item.username
             })) : []
-        );            
+        });
         
     },[task]);
 
     
     return (
         <SimpleCard>
+        
             <Form.title>{task.id ? 'Editar tarefa' : 'Nova Tarefa'}</Form.title>
-           <Form onSubmit={(e)=>handleSave(e)}>
-            <Form.label>
-                <p>Nome</p>
-                <Form.input type="text" required value={name} onChange={e=>setName(e.target.value)}/>
-            </Form.label>
+            <Form onSubmit={(e)=>handleSave(e)}>
+                <Form.label>
+                    <p>Nome</p>
+                    <Form.input type="text" required value={state.name} onChange={e=>setState('name',e.target.value)}/>
+                </Form.label>
 
-            <Form.label>
-                <p>Descrição</p>
-                <Form.textarea required value={description} onChange={e=>setDescription(e.target.value)}></Form.textarea>
-            </Form.label>
+                <Form.label>
+                    <p>Descrição</p>
+                    <Form.textarea required value={state.description} onChange={e=>setState('description',e.target.value)}></Form.textarea>
+                </Form.label>
 
-            <Form.label>
-                <p>Prioridade</p>                
-                <Select                     
-                    placeholder="Selecione"                    
-                    onChange={(value)=>setCurrentPriority(value)}
-                    options={optionsPriority} 
-                    value={currentPriority}
-                />
-            </Form.label>
-
-            <Form.dateRange className="df fdr alib"> 
-                <Form.label className="date">
-                    <p>Início</p>
-                    <DatePicker      
-                        locale="pt"                  
-                        placeholderText="dd/mm/aaaa"    
-                        dateFormat="dd/MM/yyyy"                    
-                        selected={started_at}
-                        onChange={date => setStartedAt(date)}
-                        selectsStart
-                        startDate={started_at}
-                        endDate={ending_at}
+                <Form.label>
+                    <p>Prioridade</p>                
+                    <Select                     
+                        placeholder="Selecione"                    
+                        onChange={(value)=>setState('currentPriority',value)}
+                        options={optionsPriority} 
+                        value={state.currentPriority}
                     />
                 </Form.label>
-                <Form.label className="date">
-                    <p>Término</p>
-                    <DatePicker    
-                        locale="pt"                                       
-                        placeholderText="dd/mm/aaaa" 
-                        dateFormat="dd/MM/yyyy"  
-                        selected={ending_at}
-                        onChange={date => setEndingAt(date)}
-                        selectsEnd
-                        startDate={started_at}
-                        endDate={ending_at}
-                        minDate={started_at}
+
+                <Form.dateRange className="df fdr alib"> 
+                    <Form.label className="date">
+                        <p>Início</p>
+                        <DatePicker      
+                            locale="pt"                  
+                            placeholderText="dd/mm/aaaa"    
+                            dateFormat="dd/MM/yyyy"                    
+                            selected={state.started_at}
+                            onChange={date => setState('started_at',date)}
+                            selectsStart
+                            startDate={state.started_at}
+                            endDate={state.ending_at}
+                        />
+                    </Form.label>
+                    <Form.label className="date">
+                        <p>Término</p>
+                        <DatePicker    
+                            locale="pt"                                       
+                            placeholderText="dd/mm/aaaa" 
+                            dateFormat="dd/MM/yyyy"  
+                            selected={state.ending_at}
+                            onChange={date => setState('ending_at',date)}
+                            selectsEnd
+                            startDate={state.started_at}
+                            endDate={state.ending_at}
+                            minDate={state.started_at}
+                        />
+                    </Form.label>
+                </Form.dateRange>
+                
+                <Form.label>
+                    <p>Usuários</p>
+                    <Select                     
+                        placeholder="Selecione"
+                        isMulti
+                        onChange={selectUser}
+                        options={props?.users} 
+                        value={state.usersOptions}
                     />
                 </Form.label>
-            </Form.dateRange>
-            <Form.label>
-                <p>Usuários</p>
-                <Select                     
-                    placeholder="Selecione"
-                    isMulti
-                    onChange={selectUser}
-                    options={props?.users} 
-                    value={usersOptions}
-                />
-            </Form.label>
-            <Form.button type="submit" >{task.id ? 'Atualizar' : 'Salvar'}</Form.button>
-            </Form>
-            <Form.delete onClick={()=>handleDelete()}>Deletar</Form.delete>
+
+                <Form.line />  
+
+                {state.screen==='add'?<Form.action onClick={()=>setState('screen','setSprint')}>Definir sprint</Form.action>:null}
+                {state.screen === 'setSprint' ? (<>            
+                    <Form.label>
+                        <p style={{textAlign:'center'}}>Escolha a sprint</p>
+                        <Select                     
+                            placeholder="Selecione"
+                            isMulti
+                            onChange={selectUser}
+                            options={props?.sprint} 
+                            value={state.sprintOptions}
+                        />
+                    </Form.label>
+                    <Form.action onClick={()=>setState('screen','add')}>Cancelar</Form.action>
+                </>): null}
+
+                <Form.line />                
+                <Form.button type="submit" >{task.id ? 'Atualizar' : 'Salvar'}</Form.button>
+                </Form>
+                {task.id ? <Form.action onClick={()=>handleDelete()}>Deletar</Form.action> :  <Form.line /> }
+                
         </SimpleCard>
     )
 }

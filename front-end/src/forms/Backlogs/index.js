@@ -65,8 +65,7 @@ export default ({projectId, backlog,  ...props}) => {
     useEffect(()=>{                    
         setName(backlog?.name || '');         
         setStartedAt(backlog?.started_at ? new Date(backlog?.started_at) : '');
-        setEndingAt(backlog?.ending_at ? new Date(backlog?.ending_at) : '');                         
-        
+        setEndingAt(backlog?.ending_at ? new Date(backlog?.ending_at) : '');
     },[backlog]);
 
     
@@ -109,9 +108,10 @@ export default ({projectId, backlog,  ...props}) => {
                 </Form.label>
             </Form.dateRange>
             
+            <Form.line />
             <Form.button type="submit" >{backlog.id ? 'Atualizar' : 'Salvar'}</Form.button>
             </Form>
-            <Form.delete onClick={()=>handleDelete()}>Deletar</Form.delete>
+            <Form.action onClick={()=>handleDelete()}>Deletar</Form.action>
         </SimpleCard>
     )
 }
