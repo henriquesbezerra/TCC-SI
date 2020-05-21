@@ -7,10 +7,7 @@ import { Container, Aside, Content, Header, Main, Nav } from '../CommonStyles';
 
 export default function Home(props) {  
   return (
-    <Container  >
-        <Aside>
-          <DrawerMenu menuOptions={[]} />
-        </Aside>
+    <Container >        
         <Content>
           <Header>
             <Nav>

@@ -8,12 +8,12 @@ export default function HomePage() {
     <Container>
       <Content>         
         
-        <div style={{marginTop: 80, marginBottom: '20%'}}>
+        <div style={{marginTop: 60, marginBottom: 30}}>
           <AppLogo />
         </div>
         
       <Content.pretitle>+ Agilidade em seus projetos</Content.pretitle>
-      <Content.title>Gerencie projetos<br/>de forma prática,<br/>rápida e segura!</Content.title>
+      <Content.title>Gerencie projetos de forma prática,<br/>rápida e segura!</Content.title>
       <Content.p>
         Supere obstáculos e aprimore sua gestão de projetos, 
         pois o diferencial de grandes empresas é fazer rápido e com
@@ -25,7 +25,7 @@ export default function HomePage() {
     
       </Content>   
 
-      <Banner center>
+      <Banner center padding="60px">
         <Banner.image />
       </Banner>
       

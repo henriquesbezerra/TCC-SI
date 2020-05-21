@@ -37,7 +37,7 @@ export default function Login({history}) {
     <Container>
       <Content>         
         
-        <div style={{marginTop: 80, marginBottom: '20%'}}>
+        <div style={{marginTop: 60, marginBottom: 30}}>
           <AppLogo />
         </div>
         

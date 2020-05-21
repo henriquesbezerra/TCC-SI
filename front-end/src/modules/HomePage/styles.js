@@ -6,17 +6,16 @@ import { backgroundGradient, backgroundGradient_invert, highlightGradient, highl
 
 export const Container = styled.div` 
     display: grid;   
-    grid-template-columns: 2fr 3fr;
+    grid-template-columns: 3fr 3fr;
     grid-template-rows: 100%;
     height: 100%;
 `;
 
-export const Content = styled.div`
-    padding: 60px 0px; 
+export const Content = styled.div`    
     background: #ececec;
     display: flex;
     flex-direction: column;    
-    padding: 60px 30px;
+    padding: 10px 30px;
 `;
 
 
@@ -28,7 +27,7 @@ Content.pretitle = styled.p`
 `;
 
 Content.title = styled.h1`
-    font-size: 3.4rem;
+    font-size: 2.4rem;
     color: #122868;    
     margin-bottom: 60px;
 `;
@@ -38,7 +37,7 @@ Content.p = styled.p`
     line-height: 30px;
     letter-spacing: 0.6px;
     font-size: 1.4rem;
-    padding-right: 50px;
+    padding-right: 0px;
     margin-bottom: 40px
 `;
 
@@ -86,15 +85,15 @@ Content.textForgetPassword = styled.div`
 
 
 export const Banner = styled.div`
-    padding: 60px 0px;     
-   
+    
+    ${props => props.padding ? `padding:${props.padding};` : ''}
+    
     ${backgroundGradient}
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; 
     align-items: center;
-
 
 `;
 
@@ -114,8 +113,8 @@ export const FormLogin = styled.div`
 `;
 
 FormLogin.title = styled.div`
-    font-size: 2.5rem;
-    margin-bottom: 30px;
+    font-size: 1.5rem;
+    margin: 30px auto;    
     color: #6e78dc;
     text-align: center;
     font-weight: 500;
@@ -140,12 +139,12 @@ FormLogin.label = styled.label`
     align-items: center;
     width: 90%;
     & p {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         margin: 10px 0;
     }
 
     & + label{
-        margin-top: 30px;
+        margin-top: 20px;
     }
 `;
 
@@ -155,9 +154,9 @@ FormLogin.input = styled.input`
     background: #fff;
     border: 1px solid #FFF;
     text-align: center;
-    padding: 20px 10px;
+    padding: 10px;
     width: 100%;
-    font-size: 1.3rem;
+    font-size: 1rem;
 
     
 `;
@@ -165,9 +164,9 @@ FormLogin.input = styled.input`
 FormLogin.button = styled.button`
     border: none;
     border-radius: 40px;
-    margin: 40px auto 0 auto;
+    margin: 40px auto 20px auto;
     width: 90%;
-    padding: 20px;
+    padding: 10px;
     color: #FFF;
     font-size: 1.4rem;
     text-transform: uppercase;
