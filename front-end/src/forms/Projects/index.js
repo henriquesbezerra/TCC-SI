@@ -11,14 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 registerLocale('pt', pt);
 setDefaultLocale('pt');
 
-const optionsPriority = [
-    { value: 0, label: 'Emergência' },
-    { value: 1, label: 'Urgência' },
-    { value: 2, label: 'Semi-urgência' },
-    { value: 3, label: 'Não urgência' }
-  ]
-
-export default ({task, backlogId, ...props}) => {    
+export default ({project, backlogId, ...props}) => {    
 
     const { authPost, authPut, authDelete } = useFetch();
     
@@ -42,37 +35,33 @@ export default ({task, backlogId, ...props}) => {
         try {            
             let data = {
                 name: state.name,
-                description: state.description,
-                priority: state.currentPriority?.value,
+                description: state.description,                
                 started_at: state.started_at ? moment(state.started_at).format('YYYY-MM-DD') : '',
                 ending_at: state.ending_at ? moment(state.ending_at).format('YYYY-MM-DD') : '',  
-                users: state.users,              
-                backlog_id: backlogId    
+                users: state.users                
             };
             
             let result = null;
             
-            if(task.id){
-                data.id = task.id;                
-                result = await authPut('/task', data);
+            if(project?.id){
+                data.id = project.id;                
+                result = await authPut('/project', data);
             }else{                
-                result = await authPost('/task', data);
+                result = await authPost('/project', data);
             }
             
-            if(result){
-                localStorage.setItem('current-backlog-task',JSON.stringify(result));
+            if(result){                
                 window.location.reload();
             }            
         } catch (error) {
-            console.log('error: ', e); 
+            console.log('error: ', error); 
         }
     }
 
     const handleDelete = async() => {
-        if(task?.id){
-            let result = await authDelete('/task',task.id);
-            if(result){
-                localStorage.setItem('current-backlog-task',JSON.stringify({}));
+        if(project?.id){
+            let result = await authDelete('/project',project.id);
+            if(result){                
                 window.location.reload();
             }
         }
@@ -115,33 +104,28 @@ export default ({task, backlogId, ...props}) => {
     useEffect(()=>{     
         updateState({
             ...state,
-            name: task?.name || '',
-            description: task?.description || '',
-            started_at: task?.started_at ? new Date(task?.started_at) : '',
-            ending_at: task?.ending_at ? new Date(task?.ending_at) : '',
-            
-            currentPriority: task?.priority ? 
-                optionsPriority.filter(item=> 
-                    item.value === task.priority)[0] 
-                : null,
+            name: project?.name || '',
+            description: project?.description || '',
+            started_at: project?.started_at ? new Date(project?.started_at) : '',
+            ending_at: project?.ending_at ? new Date(project?.ending_at) : '',
 
-            users: task?.users?.length ? 
-            task.users.map(user => user.id) : [],
+            users: project?.users?.length ? 
+            project.users.map(user => user.id) : [],
 
-            usersOptions:  task?.users?.length ? 
-            task.users.map(item=>({
+            usersOptions:  project?.users?.length ? 
+            project.users.map(item=>({
                 value: item.id, 
                 label: item.username
             })) : []
         });
         // eslint-disable-next-line 
-    },[task]);
+    },[project]);
 
     
     return (
         <SimpleCard>
         
-            <Form.title>{task.id ? 'Editar tarefa' : 'Nova Tarefa'}</Form.title>
+            <Form.title>{project?.id ? 'Editar projeto' : 'Novo projeto'}</Form.title>
             <Form onSubmit={(e)=>handleSave(e)}>
                 <Form.label>
                     <p>Nome</p>
@@ -151,16 +135,6 @@ export default ({task, backlogId, ...props}) => {
                 <Form.label>
                     <p>Descrição</p>
                     <Form.textarea required value={state.description} onChange={e=>setState('description',e.target.value)}></Form.textarea>
-                </Form.label>
-
-                <Form.label>
-                    <p>Prioridade</p>                
-                    <Select                     
-                        placeholder="Selecione"                    
-                        onChange={(value)=>setState('currentPriority',value)}
-                        options={optionsPriority} 
-                        value={state.currentPriority}
-                    />
                 </Form.label>
 
                 <Form.dateRange className="df fdr alib"> 
@@ -203,28 +177,10 @@ export default ({task, backlogId, ...props}) => {
                         value={state.usersOptions}
                     />
                 </Form.label>
-
-                <Form.line />  
-
-                {state.screen==='add'?<Form.action onClick={()=>setState('screen','setSprint')}>Definir sprint</Form.action>:null}
-                {state.screen === 'setSprint' ? (<>            
-                    <Form.label>
-                        <p style={{textAlign:'center'}}>Escolha a sprint</p>
-                        <Select                     
-                            placeholder="Selecione"
-                            isMulti
-                            onChange={selectUser}
-                            options={props?.sprint} 
-                            value={state.sprintOptions}
-                        />
-                    </Form.label>
-                    <Form.action onClick={()=>setState('screen','add')}>Cancelar</Form.action>
-                </>): null}
-
                 <Form.line />                
-                <Form.button type="submit" >{task.id ? 'Atualizar' : 'Salvar'}</Form.button>
-                </Form>
-                {task.id ? <Form.action onClick={()=>handleDelete()}>Deletar</Form.action> :  <Form.line /> }
+                <Form.button type="submit" >{project?.id ? 'Atualizar' : 'Salvar'}</Form.button>
+            </Form>
+            {project?.id ? <Form.action onClick={()=>handleDelete()}>Deletar</Form.action> :  <Form.line /> }
                 
         </SimpleCard>
     )

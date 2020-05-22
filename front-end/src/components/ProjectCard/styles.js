@@ -17,10 +17,6 @@ export const Container = styled.div`
         border-bottom: 1px solid rgba(192, 208, 230, 0.8);
     }
 
-    main{
-        padding: 
-    }
-
     p{
         font-weight: 500;
         line-height: 20px;
@@ -38,5 +34,17 @@ export const Container = styled.div`
         padding-top: 5px;
     }
 
+`;
+
+export const ContainerNew = styled.div`    
+    position: relative;
+    background: #FFF;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 15px;
+    border: 2px dashed #ccc;
+    color: #7b7b7b; 
+    display: flex;
+    flex-direction: row;    
 `;
 

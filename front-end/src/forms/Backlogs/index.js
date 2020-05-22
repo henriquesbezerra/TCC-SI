@@ -4,7 +4,6 @@ import SimpleCard from '../../components/SimpleCard';
 import { Form } from '../../components/Form';
 import DatePicker, { registerLocale, setDefaultLocale  } from 'react-datepicker';
 import pt from 'date-fns/locale/pt';
-import Select from 'react-select'
 import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 

@@ -30,21 +30,40 @@ export const Header = styled.header`
     justify-content: flex-end;
     padding: 0 100px 0px 20px;
     box-sizing: border-box;
+    ${props => props.panel ? `
+        background-color: #4445a8;
+    `: ''}
 `;
 
-export const Nav = styled.nav`
-    & a {
-        color: #fff;
-        font-size: 1.4rem;
-        font-weight: 600;
-        text-decoration: none;
-        margin: 0 10px;
-        opacity: 0.7;
-    }
-    & a:hover{
-        color: #fff;        
-        opacity: 1;
-    }
+export const Nav = styled.nav`  
+    & button{
+        background-color: transparent;
+        border: none;
+    }  
+    ${props => props.panel ? `
+        & a, & button {
+            color: #fff;
+            font-size: 1.4rem;            
+            text-decoration: none;
+            margin: 0 10px;    
+        }
+        & a:hover, & button:hover{
+            color: #fff;                    
+        }
+    `: `
+        & a, & button {
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin: 0 10px;
+            opacity: 0.7;
+        }
+        & a:hover, & button:hover{
+            color: #fff;        
+            opacity: 1;
+        }
+    `}
 `;
 
 export const Main = styled.main`      

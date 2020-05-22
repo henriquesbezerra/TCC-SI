@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const ContainerPages = styled.div`
     display: grid;
     grid-template-columns: ${props=> props.grid? props.grid : '1fr 1fr'};
-    grid-template-row: 100vh;   
+    grid-template-rows: 100vh;   
     grid-gap: 20px; 
 `;
 

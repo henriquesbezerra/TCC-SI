@@ -64,13 +64,16 @@ class ProjectController {
     * @param {View} ctx.view
     */
   async show ({ params, request, response, view }) {
-    const project = await Project.query('id',params.id)
+    console.log("ID",params.id);
+    const project = await Project.query()
       .with('users')
       .with('backlogs')  
       .with('backlogs.tasks')    
       .with('backlogs.tasks.users')
-      .with('boardColumns').first();  
+      .with('boardColumns')
+      .where('id', params.id).first();  
       
+    console.log("ID", project);
     return project;
   }
 
@@ -109,6 +112,13 @@ class ProjectController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const project = await Project.findOrFail(params.id)
+    try {
+      let result = await project.delete();
+      return result;
+    } catch (e) {
+      return e;
+    }
   }
 }
 

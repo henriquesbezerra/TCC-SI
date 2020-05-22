@@ -11,13 +11,17 @@ import { MdKeyboardBackspace } from 'react-icons/md';
 import Backlog from './screens/Backlog';
 import Sprints from './screens/Sprints';
 
+import { loadLists } from '../../../services/api';
+
+const data = loadLists();
+
 export default function ViewProject(props) {
   
   const { match } = props;
 
   const { get } = useFetch();
 
-  const [screen, setScreen] = useState('sprints');
+  const [screen, setScreen] = useState('board');
 
   const [project, setProject] = useState('');
   
@@ -79,7 +83,9 @@ export default function ViewProject(props) {
             <div style={{marginLeft: 10}}>Lista de projetos</div>
         </div>     
         <Title>{project?.name}</Title>
+        <p>{project?.description}</p>
       </Header>
+      <br />
       <div className="df fdr alic" style={{marginBottom: 30}}>
         <div style={{marginRight: 10}} onClick={()=>setScreen('backlog')}>Backlog</div>
         <div style={{marginRight: 10}} onClick={()=>setScreen('sprints')}>Sprints ({sprintsBacklog?.length})</div>
@@ -88,7 +94,7 @@ export default function ViewProject(props) {
       {
         screen === 'board' ? (
           <WrapperBoard>        
-            <Board />
+            <Board data={data}/>
           </WrapperBoard>          
         ) : null
       }

@@ -4,15 +4,10 @@ import produce from 'immer';
 
 import BoardContext from './context';
 
-import { loadLists } from '../../services/api';
 import List from '../List';
 import { Container } from './styles';
 
-
-const data = loadLists();
-
-
-export default function Board() {
+export default function Board({data}) {
 
   const [lists, setLists] = useState(data);
 

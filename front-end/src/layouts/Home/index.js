@@ -1,9 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import { DrawerMenu } from '../../components/DrawerMenu';
-
-import { Container, Aside, Content, Header, Main, Nav } from '../CommonStyles';
+import { Container, Content, Header, Main, Nav } from '../CommonStyles';
 
 export default function Home(props) {  
   return (

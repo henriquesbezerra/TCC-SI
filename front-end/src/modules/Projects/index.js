@@ -1,19 +1,17 @@
 import React, {useEffect, useState} from 'react';
-
 import { ContainerCards, Title, Header } from './styles';
-
-import { MdAdd  } from 'react-icons/md';
-
-
+import AddCard from '../../components/AddCard';
+import Modal from '../../components/Modal';
+import FormProject from '../../forms/Projects';
 import ProjectCard from '../../components/ProjectCard';
 import {formatDate} from '../../components/HelperFunctions';
-
 import {useFetch} from '../../hooks/useFetch';
-import { Link } from 'react-router-dom';
 
 export default function Projects({history}) {
     const { get } = useFetch();
     const [projects, setProjects] = useState([]);
+    const [modalActivity, seTModalActivity] = useState(false);
+    
 
     const loadProjects = async () =>{
         let response = await get('/project');
@@ -21,23 +19,22 @@ export default function Projects({history}) {
             setProjects(response);
         }
     }
+    
     useEffect(()=>{
         loadProjects();
         // eslint-disable-next-line 
     },[]);
 
     return (
-        <div>            
-            <Header>
-                <div className="df fdr alic">
-                    <Link  to="/projetos/novo" className='circleButton'>
-                        <MdAdd size={30} color="#000" />
-                    </Link>                    
-                    <div style={{marginLeft: 10}}>Novo Projeto</div>
-                </div>
-                <Title>Lista projetos</Title>
+        <div> 
+            <Modal active={modalActivity} toogleActive={()=>seTModalActivity(!modalActivity)}>
+                <FormProject />
+            </Modal>
+            <Header>              
+                <Title>Projetos</Title>
             </Header>
             <ContainerCards>
+                <AddCard  label="Novo projeto" onClick={()=>seTModalActivity(!modalActivity)}/>
                 {projects.map(item =>(<ProjectCard 
                     onClick={()=>{
                         history.replace({pathname: `/projetos/${item?.id}`})

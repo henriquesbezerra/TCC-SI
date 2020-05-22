@@ -1,20 +1,23 @@
 import React from 'react';
-
-import { DrawerMenu } from '../../components/DrawerMenu';
-
-import { Container, Aside, Content, Main } from '../CommonStyles';
-
-import { menuOptions } from './menuOptions';
+import { Link } from 'react-router-dom';
+import { Container, Content, Main, Header, Nav } from '../CommonStyles';
 
 export default function Panel(props) {  
   
   return (
-    <Container>
-        <Aside>
-          <DrawerMenu menuOptions={menuOptions} currentLocation={props.currentLocation}/>
-        </Aside>
+    <Container>        
         <Content>          
           <Main>
+          <Header panel>
+            <Nav panel>              
+              <Link to="/projetos">Projetos</Link>
+              <Link to="/projetos">Usuários</Link>
+              <button type="button" onClick={()=>{
+                localStorage.clear();
+                window.location.reload();
+              }}>Sair</button>
+            </Nav>
+          </Header>
             <Main.content>              
               {props.children}           
             </Main.content>
