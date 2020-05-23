@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useFetch } from '../../hooks/useFetch';
 import SimpleCard from '../../components/SimpleCard';
 import { Form } from '../../components/Form';
@@ -7,6 +7,8 @@ import pt from 'date-fns/locale/pt';
 import Select from 'react-select'
 import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
+
+import { Context } from '../../context/ProjectContext';
 
 registerLocale('pt', pt);
 setDefaultLocale('pt');
@@ -21,6 +23,7 @@ const optionsPriority = [
 export default ({task, backlogId, ...props}) => {    
 
     const { authPost, authPut, authDelete } = useFetch();
+    const { users } = useContext(Context);
     
     const [state, updateState] = useState({
         name: '',
@@ -52,27 +55,25 @@ export default ({task, backlogId, ...props}) => {
             
             let result = null;
             
-            if(task.id){
+            if(task?.id){
                 data.id = task.id;                
                 result = await authPut('/task', data);
             }else{                
                 result = await authPost('/task', data);
             }
             
-            if(result){
-                localStorage.setItem('current-backlog-task',JSON.stringify(result));
+            if(result){                
                 window.location.reload();
             }            
         } catch (error) {
-            console.log('error: ', e); 
+            console.log('error: ', error); 
         }
     }
 
     const handleDelete = async() => {
         if(task?.id){
             let result = await authDelete('/task',task.id);
-            if(result){
-                localStorage.setItem('current-backlog-task',JSON.stringify({}));
+            if(result){                
                 window.location.reload();
             }
         }
@@ -141,7 +142,7 @@ export default ({task, backlogId, ...props}) => {
     return (
         <SimpleCard>
         
-            <Form.title>{task.id ? 'Editar tarefa' : 'Nova Tarefa'}</Form.title>
+            <Form.title>{task?.id ? 'Editar tarefa' : 'Nova Tarefa'}</Form.title>
             <Form onSubmit={(e)=>handleSave(e)}>
                 <Form.label>
                     <p>Nome</p>
@@ -199,7 +200,7 @@ export default ({task, backlogId, ...props}) => {
                         placeholder="Selecione"
                         isMulti
                         onChange={selectUser}
-                        options={props?.users} 
+                        options={users} 
                         value={state.usersOptions}
                     />
                 </Form.label>
@@ -222,9 +223,9 @@ export default ({task, backlogId, ...props}) => {
                 </>): null}
 
                 <Form.line />                
-                <Form.button type="submit" >{task.id ? 'Atualizar' : 'Salvar'}</Form.button>
+                <Form.button type="submit" >{task?.id ? 'Atualizar' : 'Salvar'}</Form.button>
                 </Form>
-                {task.id ? <Form.action onClick={()=>handleDelete()}>Deletar</Form.action> :  <Form.line /> }
+                {task?.id ? <Form.action onClick={()=>handleDelete()}>Deletar</Form.action> :  <Form.line /> }
                 
         </SimpleCard>
     )

@@ -5,8 +5,7 @@ import { ContainerPages } from '../styles';
 import FormTasks from '../../../../forms/Tasks';
 import _ from 'lodash';
 
-export default function Backlog({data, users}) {    
-        
+export default function Backlog({data}) {            
     const [tasks, setTasks] = useState([]);
     const [currentTask, setCurrentTask] = useState({});        
     

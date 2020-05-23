@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useFetch } from '../../hooks/useFetch';
 import SimpleCard from '../../components/SimpleCard';
 import { Form } from '../../components/Form';
@@ -7,13 +7,16 @@ import pt from 'date-fns/locale/pt';
 import Select from 'react-select'
 import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
+import { Context } from '../../context/ProjectContext';
 
 registerLocale('pt', pt);
 setDefaultLocale('pt');
 
-export default ({project, backlogId, ...props}) => {    
+export default function FormProject({project , backlogId, ...props}) {    
 
     const { authPost, authPut, authDelete } = useFetch();
+    
+    const { users } = useContext(Context);
     
     const [state, updateState] = useState({
         name: '',
@@ -118,6 +121,8 @@ export default ({project, backlogId, ...props}) => {
                 label: item.username
             })) : []
         });
+
+        console.log(users);
         // eslint-disable-next-line 
     },[project]);
 
@@ -173,7 +178,7 @@ export default ({project, backlogId, ...props}) => {
                         placeholder="Selecione"
                         isMulti
                         onChange={selectUser}
-                        options={props?.users} 
+                        options={users} 
                         value={state.usersOptions}
                     />
                 </Form.label>

@@ -6,6 +6,7 @@ import FormProject from '../../forms/Projects';
 import ProjectCard from '../../components/ProjectCard';
 import {formatDate} from '../../components/HelperFunctions';
 import {useFetch} from '../../hooks/useFetch';
+import { ProjectContext } from '../../context/ProjectContext';
 
 export default function Projects({history}) {
     const { get } = useFetch();
@@ -26,7 +27,7 @@ export default function Projects({history}) {
     },[]);
 
     return (
-        <div> 
+        <ProjectContext> 
             <Modal active={modalActivity} toogleActive={()=>seTModalActivity(!modalActivity)}>
                 <FormProject />
             </Modal>
@@ -46,6 +47,6 @@ export default function Projects({history}) {
                     ending_at={formatDate(item?.ending_at)}
                 />))}
             </ContainerCards>
-        </div>
+        </ProjectContext>
     );
 }

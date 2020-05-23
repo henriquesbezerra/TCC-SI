@@ -18,13 +18,11 @@ export const Container =  styled.div`
 export const Background = styled.div`
     background-color: black;
     opacity: 0.4;
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;    
 `;
 export const Content = styled.div`
-    background-color: #fff;
-    border-radius: 5px;
-    padding: 20px;
     z-index: 9;
+    position: fixed;
 `;

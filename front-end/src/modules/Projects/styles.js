@@ -2,8 +2,7 @@ import styled from "styled-components";
 
 export const ContainerCards = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-row: 100vh;
+    grid-template-columns: 1fr 1fr 1fr 1fr;    
     grid-gap: 20px;
 `;
 
@@ -38,5 +37,50 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h1`
-    margin: 30px 0;
+    margin: 30px 0 10px 0;
+    button{
+        border: none;
+        background-color: transparent;
+        margin: 0 20px;
+        cursor: pointer;
+        svg{
+            color: #7b7b7b;
+        }
+        &:hover svg{
+            color: #5d5656;
+        }
+    }
+`;
+
+export const DateList = styled.div`
+    display: flex;
+    flex-direction: ${props => props.row ? 'row' : 'column'};
+    align-items: center;    
+    margin-bottom: 30px;
+`;
+
+export const DateItem = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 20px;
+    svg{
+        margin-right: 5px;
+        color: ${props => props.color || '#5d5656'};
+    }
+`;
+
+export const Responsibles =  styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+`;
+
+export const ResponsibleLabel = styled.div`
+    padding: 5px;
+    border-radius: 3px;
+    margin: 0 10px;
+    background-color: #dad7d7;
+    font-size: 12px;
+    text-transform: capitalize;
 `;

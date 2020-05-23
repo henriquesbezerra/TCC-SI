@@ -1,116 +1,99 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import moment from 'moment';
+import { MdKeyboardBackspace, MdCreate, MdDateRange, MdAlarm, MdCheckCircle } from 'react-icons/md';
 import { useFetch } from '../../../hooks/useFetch';
-
-import { Header, Title, WrapperBoard } from '../styles';
-
+import { Header, Title, WrapperBoard, DateList, DateItem, Responsibles, ResponsibleLabel } from '../styles';
 import Board from '../../../components/Board';
+import Modal from '../../../components/Modal';
+import { ProjectContext } from '../../../context/ProjectContext';
+import FormProject from '../../../forms/Projects';
 
-import { MdKeyboardBackspace } from 'react-icons/md';
-import Backlog from './screens/Backlog';
-import Sprints from './screens/Sprints';
-
-import { loadLists } from '../../../services/api';
-
-const data = loadLists();
 
 export default function ViewProject(props) {
   
   const { match } = props;
 
-  const { get } = useFetch();
-
-  const [screen, setScreen] = useState('board');
-
-  const [project, setProject] = useState('');
+  const { get } = useFetch();  
   
-  const [productBacklog, setProductBacklog] = useState({});
-  const [sprintsBacklog, setSprintsBacklog] = useState([]);
-
-  const [users, setUsers] = useState([]);
-  
+  const [project, setProject] = useState('');    
+  const [modal, setModal]  = useState(false);
   
   useEffect(()=>{    
     const getProject = async() => {    
       try {      
-        const result = await get(`/project/${match.params.id}`);      
+        const result = await get(`/project/${match.params.id}`);     
+        console.log('Result',result);
         setProject(result);
-        console.log(result);
-        let sprints = [];
-
-        // eslint-disable-next-line        
-        result.backlogs.map(item=>{
-          if(item.type === 1){
-            setProductBacklog(item);
-          }else if(item.type === 2){
-            sprints.push(item);
-          }
-        });
-        setSprintsBacklog(sprints);
+        console.log(moment(project?.created_at).format('DD/MM/YYYY'));
       } catch (e) {
         console.log('error: ', e); 
       }
     }
     getProject();
-
-    const getUsers = async()=>{
-      try {
-        const result = await get(`/users`);              
-        if(result){
-          setUsers(
-            result.map(item=>({
-                value: item.id, 
-                label: item.username
-            }))
-          );
-        }
-      } catch (e) {
-        console.log('Erro to fecth users');
-      }
-    }
-    getUsers();
     // eslint-disable-next-line
   },[]);
 
-  return (
-    <div>            
-      <Header>        
-        <div className="df fdr alic">
-            <Link  to="/projetos" className='circleButton'>
-              <MdKeyboardBackspace size={30} color="#000" />
-            </Link>                    
-            <div style={{marginLeft: 10}}>Lista de projetos</div>
-        </div>     
-        <Title>{project?.name}</Title>
-        <p>{project?.description}</p>
-      </Header>
-      <br />
-      <div className="df fdr alic" style={{marginBottom: 30}}>
-        <div style={{marginRight: 10}} onClick={()=>setScreen('backlog')}>Backlog</div>
-        <div style={{marginRight: 10}} onClick={()=>setScreen('sprints')}>Sprints ({sprintsBacklog?.length})</div>
-        <div style={{marginRight: 10}} onClick={()=>setScreen('board')}>Board</div>
-      </div>
-      {
-        screen === 'board' ? (
-          <WrapperBoard>        
-            <Board data={data}/>
-          </WrapperBoard>          
-        ) : null
-      }
-      {
-        screen === 'backlog' ? (                 
-          <Backlog data={productBacklog} users={users}/>               
-        ) : null
-      }
+  return (    
+      <ProjectContext>
+        <Modal active={modal} toogleActive={()=>setModal(!modal)}>
+          <FormProject project={project}/>
+        </Modal>
+        <Header>        
+          <div className="df fdr alic">
+              <Link  to="/projetos" className='circleButton'>
+                <MdKeyboardBackspace size={30} color="#000" />
+              </Link>                    
+              <div style={{marginLeft: 10}}>Lista de projetos</div>
+          </div>     
+          <Title>
+            {project?.name}
+            <button type="button" onClick={()=>setModal(!modal)}><MdCreate size={20}/></button>
+          </Title>
 
-      {
-        screen === 'sprints' ? (          
-            <Sprints projectId={project?.id} data={sprintsBacklog}/>
-        ) : null
-      }
+          {project?.users?.length > 0 &&
+            <Responsibles>
+              <b>Responsável (s):</b>
+              {project?.users.map((responsible,index)=>
+                <ResponsibleLabel key={responsible.id+index}>
+                  {responsible?.username}
+                </ResponsibleLabel>)}
+            </Responsibles>
+          }
 
-      
-    </div>
+          
+          <p><b>Cronograma:</b></p><br />
+          <DateList row>
+            <DateItem>
+              <MdDateRange size={20} />
+              {moment(project?.started_at || project?.created_at).format('DD/MM/YYYY')}
+            </DateItem>
+
+            {project?.ending_at && 
+              <DateItem>
+                <MdAlarm size={20} />
+                {moment(project?.ending_at).format('DD/MM/YYYY')}
+              </DateItem>
+            }
+            {project?.finished_at && 
+              <DateItem color={project?.finished_at && '#2ecc71'}>
+                <MdCheckCircle size={20} />
+                {moment(project?.finished_at).format('DD/MM/YYYY')}
+              </DateItem>
+            }
+          </DateList>                 
+          
+          <p><b>Descrição:</b> {project?.description}</p>
+          
+        </Header>
+
+        <br />
+        <br />
+        
+        <WrapperBoard>        
+          <Board data={project}/>
+        </WrapperBoard>  
+     
+      </ProjectContext>             
   );
 }

@@ -14,6 +14,23 @@ export const Container = styled.div`
         position: absolute;
         top: -22px;
         left: 15px;
+        right: 15px;
+        div{
+            display: flex;
+            flex-direction: row;
+            align-items: center;           
+        }
+        button{
+            border: none;
+            background-color: transparent;            
+            cursor: pointer;
+            svg{
+                color: #7b7b7b;
+            }
+            &:hover svg{
+                color: #5d5656;
+            }
+        }
     }
 
     p{

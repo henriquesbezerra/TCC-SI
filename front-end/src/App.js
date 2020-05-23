@@ -7,8 +7,8 @@ import RouterController from './controllers/RouterController';
 
 function App() {
   return (
-    <DndProvider backend={HTML5Backend}>      
-      <RouterController />
+    <DndProvider backend={HTML5Backend}>  
+      <RouterController />      
     </DndProvider>
   );
 }

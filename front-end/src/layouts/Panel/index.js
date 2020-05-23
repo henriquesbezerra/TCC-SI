@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Content, Main, Header, Nav } from '../CommonStyles';
+import Modal from '../../components/Modal';
 
 export default function Panel(props) {  
   
@@ -18,11 +19,14 @@ export default function Panel(props) {
               }}>Sair</button>
             </Nav>
           </Header>
-            <Main.content>              
+            <Main.content>               
               {props.children}           
             </Main.content>
           </Main>
-        </Content>                
+        </Content>
+        <Modal active={false}>
+          Eita
+        </Modal>
     </Container>
   );
 }

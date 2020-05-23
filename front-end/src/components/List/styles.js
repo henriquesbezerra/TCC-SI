@@ -22,11 +22,18 @@ export const Container = styled.div`
         padding: 0 10px;
     }
 
+    h3{
+      font-weight: normal;
+      font-size: 14px;
+      margin-top: 10px;
+      padding: 0 10px;
+    }
+
     button{
-        width: 42px;
-        height: 42px;
-        border-radius: 20px;
-        background:  #3b5bfd;
+        width: 30px;
+        height: 30px;
+        border-radius: 20px;        
+        background-color: transparent;
         border: 0;
         cursor: pointer;
     }

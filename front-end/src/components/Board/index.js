@@ -11,6 +11,7 @@ export default function Board({data}) {
 
   const [lists, setLists] = useState(data);
 
+  
   function move(fromList, toList, from, to){
     setLists(produce(lists, draft =>{
       const dragged = draft[fromList].cards[from];
@@ -22,7 +23,10 @@ export default function Board({data}) {
   return (
     <BoardContext.Provider value={{ lists, move }} >
       <Container>
-        {lists.map((list, index) => <List key={list.title} index={index} data={list}/>)}
+        {data?.backlogs?.length && data?.backlogs?.map((backlog, index) => <List           
+          key={`in${index}`} 
+          index={index} 
+          data={backlog}/>)}          
       </Container>
     </BoardContext.Provider>
   );

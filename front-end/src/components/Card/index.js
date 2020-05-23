@@ -1,15 +1,20 @@
-import React, {useRef, useContext} from 'react';
+import React, {useRef, useContext, useState} from 'react';
 
 import BoardContext from '../Board/context';
+import { Priority } from '../Priority';
 
 import { useDrag, useDrop } from 'react-dnd';
 
-import { Container, Label } from './styles';
+import { Container } from './styles';
+import { MdCreate } from 'react-icons/md';
+import Modal from '../Modal';
+import FormTask from '../../forms/Tasks';
 
 export default function Card({data, index, listIndex}) {
 
   const ref = useRef();
   const { move } = useContext(BoardContext);
+  const [modal, setModal] = useState(false);
 
   const [{isDragging}, dragRef] = useDrag({
     item: { type: 'CARD', index, listIndex  },
@@ -58,12 +63,24 @@ export default function Card({data, index, listIndex}) {
   dragRef(dropRef(ref));
 
   return (
-    <Container ref={ref} isDragging={isDragging}>
-      <header>
-        {data.labels.map(label => <Label key={label} color={label} />)}        
-      </header>
-      <p>{data.content}</p>
-      {data.user && (<img src={data.user} alt="Avatar Usuário" />)}
-    </Container>
+    <>
+      <Modal active={modal} toogleActive={()=>setModal(!modal)}>
+        <FormTask task={data} />
+      </Modal>
+      <Container ref={ref} isDragging={isDragging}>        
+        <header>
+          <div>
+            <Priority type="square" urgency={data.priority}/>
+            {data.name}
+          </div>
+          <button type="button" onClick={()=>setModal(!modal)}>
+            <MdCreate size={15}/>
+          </button>
+        </header>
+        <p></p>
+        <p>{data.description}</p>
+        {data.user && (<img src={data.user} alt="Avatar Usuário" />)}
+      </Container>
+    </>
   );
 }
