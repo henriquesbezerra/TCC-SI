@@ -96,8 +96,9 @@ class TaskController {
 
     await task.save();
 
-    if(users && users.length > 0){
-      await task.users().attach(users);
+    if(users){
+      console.log('USERS',users);
+      await task.users().sync(users);
       await task.load('users');
     }
 

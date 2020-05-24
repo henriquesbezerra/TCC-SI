@@ -41,7 +41,7 @@ export default function List({data, index: listIndex}) {
       </header>
 
       <ul>        
-        {data?.tasks.map((task, index) => <Card key={task.id} listIndex={listIndex} index={index}  data={task} />)}
+        {data?.tasks.map((task, index) => <Card key={task.id} listIndex={listIndex} index={index}  data={task}  backlogId={data.id} />)}
       </ul>
     </Container>
   );

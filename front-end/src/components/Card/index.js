@@ -10,7 +10,7 @@ import { MdCreate } from 'react-icons/md';
 import Modal from '../Modal';
 import FormTask from '../../forms/Tasks';
 
-export default function Card({data, index, listIndex}) {
+export default function Card({data, backlogId, index, listIndex}) {
 
   const ref = useRef();
   const { move } = useContext(BoardContext);
@@ -65,7 +65,7 @@ export default function Card({data, index, listIndex}) {
   return (
     <>
       <Modal active={modal} toogleActive={()=>setModal(!modal)}>
-        <FormTask task={data} />
+        <FormTask task={data} backlogId={backlogId} />
       </Modal>
       <Container ref={ref} isDragging={isDragging}>        
         <header>

@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { MdKeyboardBackspace, MdCreate, MdDateRange, MdAlarm, MdCheckCircle } from 'react-icons/md';
-import { useFetch } from '../../../hooks/useFetch';
-import { Header, Title, WrapperBoard, DateList, DateItem, Responsibles, ResponsibleLabel } from '../styles';
-import Board from '../../../components/Board';
-import Modal from '../../../components/Modal';
-import { ProjectContext } from '../../../context/ProjectContext';
-import FormProject from '../../../forms/Projects';
+import { useFetch } from '../../hooks/useFetch';
+import { Header, Title, WrapperBoard, DateList, DateItem, Responsibles, ResponsibleLabel } from './styles';
+import Board from '../../components/Board';
+import Modal from '../../components/Modal';
+import { ProjectContext } from '../../context/ProjectContext';
+import FormProject from '../../forms/Projects';
 
 
 export default function ViewProject(props) {
   
-  const { match } = props;
-
+  const { match, history } = props;
+  
   const { get } = useFetch();  
   
   const [project, setProject] = useState('');    
@@ -22,10 +22,8 @@ export default function ViewProject(props) {
   useEffect(()=>{    
     const getProject = async() => {    
       try {      
-        const result = await get(`/project/${match.params.id}`);     
-        console.log('Result',result);
-        setProject(result);
-        console.log(moment(project?.created_at).format('DD/MM/YYYY'));
+        const result = await get(`/project/${match.params.id}`);             
+        setProject(result);        
       } catch (e) {
         console.log('error: ', e); 
       }
@@ -37,7 +35,7 @@ export default function ViewProject(props) {
   return (    
       <ProjectContext>
         <Modal active={modal} toogleActive={()=>setModal(!modal)}>
-          <FormProject project={project}/>
+          <FormProject project={project} history={history}/>
         </Modal>
         <Header>        
           <div className="df fdr alic">

@@ -16,18 +16,19 @@ export default function FormProject({project , backlogId, ...props}) {
 
     const { authPost, authPut, authDelete } = useFetch();
     
-    const { users } = useContext(Context);
+    const { users: usersContext } = useContext(Context);
     
     const [state, updateState] = useState({
         name: '',
         description: '',
         currentPriority: {},
         started_at: '',
-        ending_at: '',
-        users: [],
+        ending_at: '',        
         usersOptions: [],
         screen: 'add'
     });
+
+    const [users, setUsers] = useState([]);
 
     const setState = (key, value) =>{
         updateState({...state, [key]:value });
@@ -41,11 +42,11 @@ export default function FormProject({project , backlogId, ...props}) {
                 description: state.description,                
                 started_at: state.started_at ? moment(state.started_at).format('YYYY-MM-DD') : '',
                 ending_at: state.ending_at ? moment(state.ending_at).format('YYYY-MM-DD') : '',  
-                users: state.users                
+                users: users               
             };
             
             let result = null;
-            
+
             if(project?.id){
                 data.id = project.id;                
                 result = await authPut('/project', data);
@@ -54,6 +55,7 @@ export default function FormProject({project , backlogId, ...props}) {
             }
             
             if(result){                
+                console.log(result, state.users)
                 window.location.reload();
             }            
         } catch (error) {
@@ -64,8 +66,8 @@ export default function FormProject({project , backlogId, ...props}) {
     const handleDelete = async() => {
         if(project?.id){
             let result = await authDelete('/project',project.id);
-            if(result){                
-                window.location.reload();
+            if(result && props?.history){                
+                props.history.replace({pathname: "/projetos"});
             }
         }
     };
@@ -75,26 +77,28 @@ export default function FormProject({project , backlogId, ...props}) {
             "select-option": ()=>{                
                 let usersId = value.map(user=>user.value);            
                 updateState({
-                    ...state,
-                    users: usersId,
+                    ...state,                    
                     usersOptions: value
-                });                          
+                });  
+                setUsers(usersId);
             },
-            "remove-value":()=>{
+            "remove-value":()=>{                
                 if(value?.length){
                     let usersId = value.map(user=>user.value);            
-                    setState('users', usersId);
-                }else{
-                    setState('users', null);
+                    setUsers(usersId);                    
+                }else{                    
+                    setUsers([]);                    
                 }                
                 setState('usersOptions', value);
             },
-            "clear":()=>{                
+            "clear":()=>{               
+                console.log(value);
                 updateState({
                     ...state,
                     users: [],
                     usersOptions: []
                 });
+                setUsers([]);
             },
             "deselect-option":()=>{},
             "pop-value":()=>{},
@@ -121,15 +125,12 @@ export default function FormProject({project , backlogId, ...props}) {
                 label: item.username
             })) : []
         });
-
-        console.log(users);
         // eslint-disable-next-line 
     },[project]);
 
     
     return (
         <SimpleCard>
-        
             <Form.title>{project?.id ? 'Editar projeto' : 'Novo projeto'}</Form.title>
             <Form onSubmit={(e)=>handleSave(e)}>
                 <Form.label>
@@ -178,7 +179,7 @@ export default function FormProject({project , backlogId, ...props}) {
                         placeholder="Selecione"
                         isMulti
                         onChange={selectUser}
-                        options={users} 
+                        options={usersContext} 
                         value={state.usersOptions}
                     />
                 </Form.label>
@@ -186,7 +187,6 @@ export default function FormProject({project , backlogId, ...props}) {
                 <Form.button type="submit" >{project?.id ? 'Atualizar' : 'Salvar'}</Form.button>
             </Form>
             {project?.id ? <Form.action onClick={()=>handleDelete()}>Deletar</Form.action> :  <Form.line /> }
-                
         </SimpleCard>
     )
 }

@@ -23,18 +23,19 @@ const optionsPriority = [
 export default ({task, backlogId, ...props}) => {    
 
     const { authPost, authPut, authDelete } = useFetch();
-    const { users } = useContext(Context);
+    const { users: contextUsers } = useContext(Context);
     
     const [state, updateState] = useState({
         name: '',
         description: '',
         currentPriority: {},
         started_at: '',
-        ending_at: '',
-        users: [],
+        ending_at: '',        
         usersOptions: [],
         screen: 'add'
     });
+
+    const [users, setUsers] = useState([]);
 
     const setState = (key, value) =>{
         updateState({...state, [key]:value });
@@ -49,20 +50,20 @@ export default ({task, backlogId, ...props}) => {
                 priority: state.currentPriority?.value,
                 started_at: state.started_at ? moment(state.started_at).format('YYYY-MM-DD') : '',
                 ending_at: state.ending_at ? moment(state.ending_at).format('YYYY-MM-DD') : '',  
-                users: state.users,              
+                users: users,              
                 backlog_id: backlogId    
             };
             
             let result = null;
-            
+         
             if(task?.id){
-                data.id = task.id;                
+                data.id = task.id;                                
                 result = await authPut('/task', data);
             }else{                
-                result = await authPost('/task', data);
+                result = await authPost('/task', data);                
             }
             
-            if(result){                
+            if(result){                           
                 window.location.reload();
             }            
         } catch (error) {
@@ -84,26 +85,26 @@ export default ({task, backlogId, ...props}) => {
             "select-option": ()=>{                
                 let usersId = value.map(user=>user.value);            
                 updateState({
-                    ...state,
-                    users: usersId,
+                    ...state,                    
                     usersOptions: value
-                });                          
+                });                
+                setUsers(usersId);
             },
             "remove-value":()=>{
                 if(value?.length){
                     let usersId = value.map(user=>user.value);            
-                    setState('users', usersId);
+                    setUsers(usersId);
                 }else{
-                    setState('users', null);
+                    setUsers([]);
                 }                
                 setState('usersOptions', value);
             },
             "clear":()=>{                
                 updateState({
-                    ...state,
-                    users: [],
+                    ...state,                    
                     usersOptions: []
                 });
+                setUsers([]);
             },
             "deselect-option":()=>{},
             "pop-value":()=>{},
@@ -200,7 +201,7 @@ export default ({task, backlogId, ...props}) => {
                         placeholder="Selecione"
                         isMulti
                         onChange={selectUser}
-                        options={users} 
+                        options={contextUsers} 
                         value={state.usersOptions}
                     />
                 </Form.label>

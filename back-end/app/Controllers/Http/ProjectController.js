@@ -95,7 +95,7 @@ class ProjectController {
 
     await project.save();
 
-    if(users && users.length > 0){
+    if(users){
       await project.users().sync(users);
       await project.load('users');
     }

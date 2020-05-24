@@ -4,7 +4,7 @@ import Dashboard from '../modules/Dashboard';
 import HomePage from '../modules/HomePage';
 import Login from '../modules/HomePage/pages/Login';
 import Projects from '../modules/Projects';
-import ViewProject from '../modules/Projects/Pages/ViewProject';
+import ViewProject from '../modules/Projects/View';
 
 export default [
     {
