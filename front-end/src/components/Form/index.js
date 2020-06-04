@@ -40,7 +40,8 @@ Form.dateRange = styled.div`
     flex-direction: row;
     align-items: baseline;
     
-    .date:first-child{
+    .date:first-child,
+    label:first-child{
         margin-right: 10px
     }
 `;

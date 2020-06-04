@@ -2,9 +2,10 @@ import { isAuthenticated } from './AuthController';
 
 import Dashboard from '../modules/Dashboard';
 import HomePage from '../modules/HomePage';
-import Login from '../modules/HomePage/pages/Login';
+import Login from '../modules/HomePage/Login';
 import Projects from '../modules/Projects';
 import ViewProject from '../modules/Projects/View';
+import Users from '../modules/Users';
 
 export default [
     {
@@ -36,6 +37,13 @@ export default [
         type: 'private',
         layout: 'panel',
         component: ViewProject
+    },
+    {        
+        path: '/usuarios',
+        active: true,                
+        type: 'private',
+        layout: 'panel',
+        component: Users
     }
 
 ]

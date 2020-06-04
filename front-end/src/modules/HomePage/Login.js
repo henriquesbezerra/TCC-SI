@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { isAuthenticated } from '../../../controllers/AuthController';
-import { useFetch } from '../../../hooks/useFetch';
+import { isAuthenticated } from '../../controllers/AuthController';
+import { useFetch } from '../../hooks/useFetch';
 
 import { Redirect } from 'react-router-dom';
 
-import { Container, Content, Banner, FormLogin } from '../styles';
-import AppLogo from '../../../components/AppLogo';
+import { Container, Content, Banner, FormLogin } from './styles';
+import AppLogo from '../../components/AppLogo';
 
 
 export default function Login({history}) {

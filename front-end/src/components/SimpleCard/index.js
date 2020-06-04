@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Container } from './styles';
 
-export default function SimpleCard({children}) {
+export default function SimpleCard({children, ...props}) {
 
   return (
-    <Container>
+    <Container {...props}>
       {children}
     </Container>
   );

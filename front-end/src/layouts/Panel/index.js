@@ -12,7 +12,7 @@ export default function Panel(props) {
           <Header panel>
             <Nav panel>              
               <Link to="/projetos">Projetos</Link>
-              <Link to="/projetos">Usuários</Link>
+              <Link to="/usuarios">Usuários</Link>
               <button type="button" onClick={()=>{
                 localStorage.clear();
                 window.location.reload();

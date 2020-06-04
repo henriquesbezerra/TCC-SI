@@ -2,22 +2,20 @@ import React, {useEffect, useState} from 'react';
 import { ContainerCards, Title, Header } from './styles';
 import AddCard from '../../components/AddCard';
 import Modal from '../../components/Modal';
-import FormProject from '../../forms/Projects';
-import ProjectCard from '../../components/ProjectCard';
-import {formatDate} from '../../components/HelperFunctions';
+import FormUsers from '../../forms/Users';
+import UserCard from '../../components/UserCard';
 import {useFetch} from '../../hooks/useFetch';
-import { ProjectContext } from '../../context/ProjectContext';
 
-export default function Projects({history}) {
+export default function Users({history}) {
     const { get } = useFetch();
-    const [projects, setProjects] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [user, setUser] = useState(null);
     const [modalActivity, seTModalActivity] = useState(false);
     
-
     const loadProjects = async () =>{
-        let response = await get('/project');
+        let response = await get('/users');
         if(response){
-            setProjects(response);
+            setUsers(response);
         }
     }
     
@@ -27,26 +25,27 @@ export default function Projects({history}) {
     },[]);
 
     return (
-        <ProjectContext> 
+        <> 
             <Modal active={modalActivity} toogleActive={()=>seTModalActivity(!modalActivity)}>
-                <FormProject />
+                <FormUsers user={user}/>
             </Modal>
             <Header>              
-                <Title>Projetos</Title>
+                <Title>Usuários</Title>
             </Header>
             <ContainerCards>
-                <AddCard  label="Novo projeto" onClick={()=>seTModalActivity(!modalActivity)}/>
-                {projects.map(item =>(<ProjectCard 
+                <AddCard  label="Novo usuário" onClick={()=>{
+                    setUser(null);
+                    seTModalActivity(!modalActivity);
+                }}/>
+                {users.map(user =>(<UserCard 
                     onClick={()=>{
-                        history.replace({pathname: `/projetos/${item?.id}`})
+                        setUser(user);
+                        seTModalActivity(!modalActivity);
                     }}
-                    key={item?.id}
-                    title={item?.name}
-                    description={item?.description}                    
-                    started_at={formatDate(item?.started_at)}
-                    ending_at={formatDate(item?.ending_at)}
+                    key={user?.id}
+                    user={user}                 
                 />))}
             </ContainerCards>
-        </ProjectContext>
+        </>
     );
 }

@@ -107,4 +107,8 @@ export default createGlobalStyle`
         justify-content: center;
     }
 
+    .jc-sb{
+        justify-content: space-between;
+    }
+
 `;
