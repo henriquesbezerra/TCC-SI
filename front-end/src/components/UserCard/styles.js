@@ -22,10 +22,12 @@ export const Container = styled.div`
         line-height: 20px;
         color:#464646;
         font-size: 1rem;
-        &.clientName{
+        &.info{
             margin-top: 10px;
             margin-bottom: 5px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            color: #393a3c;
+            font-weight: normal;
         }
     }
 

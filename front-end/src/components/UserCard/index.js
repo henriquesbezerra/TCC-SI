@@ -8,10 +8,11 @@ const UserCard = ({user, onClick}) => {
     <Container onClick={onClick} style={onClick ? {cursor: 'pointer'} : {}}>
       <header>{user?.username}</header>
       <main>
-        <p>{user?.email}</p>
-        {/* <p className="clientName">{client}</p> */}
+        <p>{user?.name} - <small>{user.office}</small></p>
+        <p className="info"></p>
+        <p className="info">{user.biography}</p>
       </main>
-      <footer>Eita</footer>
+      <footer>{user?.email}</footer>
     </Container>
   );
 };

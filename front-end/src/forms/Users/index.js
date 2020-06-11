@@ -43,19 +43,19 @@ export default function FormUsers({user , ...props}) {
                 phone: state.phone,
                 office: state.office,
                 access_level: state.access_level,
-                birthdate: state.birthdate ? moment(state.birthdate).format('YYYY-MM-DD') : ''
+                birthdate: state.birthdate ? moment(state.birthdate).format('YYYY-MM-DD HH:MM:SS') : ''
             };
             
             let result = null;
 
             if(user?.id){
                 data.id = user.id;                
-                result = await authPut('/add', data);
+                result = await authPut('/users', data);
             }else{                
                 result = await authPost('/add', data);
             }
             
-            if(result){                                
+            if(result){                                                
                 window.location.reload();
             }            
         } catch (error) {
@@ -65,9 +65,9 @@ export default function FormUsers({user , ...props}) {
 
     const handleDelete = async() => {
         if(user?.id){
-            let result = await authDelete('/add',user.id);
-            if(result && props?.history){                
-                props.history.replace({pathname: "/usuarios"});
+            let result = await authDelete('/users',user.id);            
+            if(result){                
+               window.location.reload();
             }
         }
     };
