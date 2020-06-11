@@ -5,6 +5,7 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 const Backlog = use('App/Models/Backlog')
+const Task = use('App/Models/Task')
 
 class BacklogController {
     /**
@@ -34,9 +35,9 @@ class BacklogController {
    */
   async store ({ request, response }) {
     const { ...data} = request.all();
-    
+
     const backlog = await Backlog.create(data);
-    
+
     return backlog;
   }
 
@@ -52,9 +53,9 @@ class BacklogController {
   async show ({ params, request, response, view }) {
     const project = await Project.query('id',params.id)
       .with('users')
-      .with('backlogs')      
-      .with('boardColumns').first();  
-      
+      .with('backlogs')
+      .with('boardColumns').first();
+
     return project;
   }
 
@@ -71,11 +72,11 @@ class BacklogController {
     const backlog = await Backlog.findOrFail(params.id)
 
     const {...data} = request.all();
-    
+
     backlog.merge(data);
 
     await backlog.save();
-  
+
     return backlog;
   }
 
@@ -88,8 +89,15 @@ class BacklogController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
-    const backlog = await Backlog.findOrFail(params.id)
+    const backlog = await Backlog.findOrFail(params.id);
+
     try {
+
+      await Task
+        .query()
+        .where('backlog_id', params.id)
+        .delete();
+
       let result = await backlog.delete();
       return result;
     } catch (e) {

@@ -8,6 +8,8 @@ import Board from '../../components/Board';
 import Modal from '../../components/Modal';
 import { ProjectContext } from '../../context/ProjectContext';
 import FormProject from '../../forms/Projects';
+import FormBacklogs from '../../forms/Backlogs';
+import AddCard from '../../components/AddCard';
 
 
 export default function ViewProject(props) {
@@ -18,6 +20,7 @@ export default function ViewProject(props) {
   
   const [project, setProject] = useState('');    
   const [modal, setModal]  = useState(false);
+  const [modalBacklog, setModalBacklog] = useState(false);
   
   useEffect(()=>{    
     const getProject = async() => {    
@@ -37,6 +40,14 @@ export default function ViewProject(props) {
         <Modal active={modal} toogleActive={()=>setModal(!modal)}>
           <FormProject project={project} history={history}/>
         </Modal>
+
+        <Modal           
+          active={modalBacklog} 
+          toogleActive={()=>setModalBacklog(!modalBacklog)} 
+        >
+          <FormBacklogs projectId={project.id} />
+        </Modal>
+
         <Header>        
           <div className="df fdr alic">
               <Link  to="/projetos" className='circleButton'>
@@ -58,7 +69,6 @@ export default function ViewProject(props) {
                 </ResponsibleLabel>)}
             </Responsibles>
           }
-
           
           <p><b>Cronograma:</b></p><br />
           <DateList row>
@@ -85,6 +95,14 @@ export default function ViewProject(props) {
           
         </Header>
 
+        <br />
+        <br />
+        <div style={{width: 150}}>
+          <AddCard 
+            label="Nova Sprint"
+            onClick={()=>setModalBacklog(!modalBacklog)}
+          />
+        </div>
         <br />
         <br />
         

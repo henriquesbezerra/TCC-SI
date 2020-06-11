@@ -21,16 +21,17 @@ export default ({projectId, backlog,  ...props}) => {
         e.preventDefault();
         try {            
             let data = {
-                name,                
+                name,                                
                 started_at: started_at ? moment(started_at).format('YYYY-MM-DD') : '',
                 ending_at: ending_at ? moment(ending_at).format('YYYY-MM-DD') : '',
-                type: 2,
-                project_id: projectId
+                type: 2
             };
             
             let result = null;
+
+            if(projectId){ data.project_id = projectId; }
             
-            if(backlog.id){
+            if(backlog?.id){
                 data.id = backlog.id;                
                 result = await authPut('/backlog', data);
             }else{                
@@ -53,8 +54,7 @@ export default ({projectId, backlog,  ...props}) => {
     const handleDelete = async() => {
         if(backlog?.id){
             let result = await authDelete('/backlog',backlog.id);
-            if(result){                
-                localStorage.setItem('current-sprint',JSON.stringify({}));
+            if(result){                                
                 window.location.reload();
             }
         }
@@ -70,7 +70,7 @@ export default ({projectId, backlog,  ...props}) => {
     
     return (
         <SimpleCard>
-            <Form.title>{backlog.id ? 'Editar Sprint' : 'Nova Sprint'}</Form.title>
+            <Form.title>{backlog?.id ? 'Editar Sprint' : 'Nova Sprint'}</Form.title>
            <Form onSubmit={(e)=>handleSave(e)}>
             <Form.label>
                 <p>Nome</p>
@@ -108,9 +108,11 @@ export default ({projectId, backlog,  ...props}) => {
             </Form.dateRange>
             
             <Form.line />
-            <Form.button type="submit" >{backlog.id ? 'Atualizar' : 'Salvar'}</Form.button>
+            <Form.button type="submit" >{backlog?.id ? 'Atualizar' : 'Salvar'}</Form.button>
             </Form>
-            <Form.action onClick={()=>handleDelete()}>Deletar</Form.action>
+            {backlog ? 
+                <Form.action onClick={()=>handleDelete()}>Deletar</Form.action>
+            : null}
         </SimpleCard>
     )
 }
